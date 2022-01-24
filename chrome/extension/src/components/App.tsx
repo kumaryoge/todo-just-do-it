@@ -14,7 +14,7 @@ function App() {
     });
 
     React.useEffect(() => {
-        getAllItems((items) => setItems(items));
+        getAllItems(items => setItems(items));
     }, []);
 
     return (
@@ -22,13 +22,40 @@ function App() {
             <p id="greeting">{getGreeting()}</p>
 
             <div className="separator">Tasks</div>
-            <TasksContainer items={items} />
+            <TasksContainer
+                items={items}
+                onAddTask={task => {
+                    setItems({
+                        tasks: items.tasks.concat(task),
+                        projects: items.projects,
+                        tags: items.tags
+                    });
+                }}
+            />
 
             <div className="separator">Projects</div>
-            <ProjectsContainer items={items} />
+            <ProjectsContainer
+                items={items}
+                onAddProject={project => {
+                    setItems({
+                        tasks: items.tasks,
+                        projects: items.projects.concat(project),
+                        tags: items.tags
+                    });
+                }}
+            />
 
             <div className="separator">Tags</div>
-            <TagsContainer items={items} />
+            <TagsContainer
+                items={items}
+                onAddTag={tag => {
+                    setItems({
+                        tasks: items.tasks,
+                        projects: items.projects,
+                        tags: items.tags.concat(tag)
+                    });
+                }}
+            />
         </div>
     );
 }

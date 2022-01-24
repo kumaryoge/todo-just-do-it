@@ -1,13 +1,15 @@
 import React from 'react';
 import ItemInput from './ItemInput';
-import { Items } from '../types/all';
+import { Items, Project } from '../types/all';
 import TasksAccordion from './TasksAccordion';
+import { addProject } from '../dao/projectDao';
 
 interface Props {
     items: Items;
+    onAddProject(project: Project): void;
 }
 
-function ProjectsContainer({ items }: Props) {
+function ProjectsContainer({ items, onAddProject }: Props) {
     return (
         <div>
             <div className="container">
@@ -21,7 +23,13 @@ function ProjectsContainer({ items }: Props) {
                     />
                 ))}
             </div>
-            <ItemInput type="project" />
+            <ItemInput
+                type="project"
+                onAddItem={value => {
+                    const project: Project = { id: 0, name: value };
+                    addProject(project, () => onAddProject(project));
+                }}
+            />
         </div>
     );
 }

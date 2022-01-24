@@ -1,7 +1,7 @@
 import React from 'react';
 import ItemInput from './ItemInput';
 import TasksAccordion from './TasksAccordion';
-import { Items } from '../types/all';
+import { Items, Task } from '../types/all';
 import {
     filterTodaysTasks,
     filterTomorrowsTasks,
@@ -9,12 +9,14 @@ import {
     filterUnscheduledTasks,
     filterCompletedTasks
 } from '../utils/common';
+import { addTask } from '../dao/taskDao';
 
 interface Props {
     items: Items;
+    onAddTask(task: Task): void;
 }
 
-function TasksContainer({ items }: Props) {
+function TasksContainer({ items, onAddTask }: Props) {
     return (
         <div>
             <div className="container">
@@ -50,7 +52,13 @@ function TasksContainer({ items }: Props) {
                 />
             </div>
             <div className="task-container">
-                <ItemInput type="task" />
+                <ItemInput
+                    type="task"
+                    onAddItem={value => {
+                        const task: Task = { id: 0, name: value };
+                        addTask(task, () => onAddTask(task));
+                    }}
+                />
                 <i className="fa fa-calendar"></i>
                 <i className="fa fa-list"></i>
                 <i className="fa fa-tags"></i>

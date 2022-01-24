@@ -1,13 +1,15 @@
 import React from 'react';
 import ItemInput from './ItemInput';
-import { Items } from '../types/all';
+import { Items, Tag } from '../types/all';
 import TasksAccordion from './TasksAccordion';
+import { addTag } from '../dao/tagDao';
 
 interface Props {
     items: Items;
+    onAddTag(tag: Tag): void;
 }
 
-function TagsContainer({ items }: Props) {
+function TagsContainer({ items, onAddTag }: Props) {
     return (
         <div>
             <div className="container">
@@ -21,7 +23,13 @@ function TagsContainer({ items }: Props) {
                     />
                 ))}
             </div>
-            <ItemInput type="tag" />
+            <ItemInput
+                type="tag"
+                onAddItem={value => {
+                    const tag: Tag = { id: 0, name: value };
+                    addTag(tag, () => onAddTag(tag));
+                }}
+            />
         </div>
     );
 }
