@@ -63,6 +63,10 @@ export function getAllItems(callback: (items: Items) => void) {
             {
                 id: 2,
                 name: "Project 2"
+            },
+            {
+                id: 3,
+                name: "Project 3"
             }
         ],
         tags: [
@@ -73,6 +77,10 @@ export function getAllItems(callback: (items: Items) => void) {
             {
                 id: 2,
                 name: "Tag 2"
+            },
+            {
+                id: 3,
+                name: "Tag 3"
             }
         ]
     });

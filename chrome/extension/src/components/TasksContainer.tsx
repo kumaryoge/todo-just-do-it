@@ -49,7 +49,7 @@ function TasksContainer({ items }: Props) {
                     taskFilter={filterCompletedTasks}
                 />
             </div>
-            <div className="task-input-container">
+            <div className="task-container">
                 <ItemInput type="task" />
                 <i className="fa fa-calendar"></i>
                 <i className="fa fa-list"></i>

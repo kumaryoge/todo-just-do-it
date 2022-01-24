@@ -12,13 +12,18 @@ input {
     outline: none;
     padding: 10px 5px 10px 15px;
     font-size: 14px;
+    color: darkslategray;
 }
 
-.task-input-container {
+input.is-completed {
+    text-decoration: line-through;
+}
+
+.task-container {
     display: flex;
 }
 
-.task-input-container i {
+.task-container i {
     padding: 10px 5px;
     font-size: 14px;
     color: darkgray;

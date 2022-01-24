@@ -9,8 +9,13 @@ interface Props {
 
 function TaskContainer({ task, allProjects, allTags }: Props) {
     return (
-        <div className="task-input-container">
-            <input type="text" placeholder={task.name} disabled />
+        <div className="task-container">
+            <input
+                className={task.completed ? "is-completed" : ""}
+                type="text"
+                value={task.name}
+                readOnly={true}
+            />
             <i className="fa fa-edit"></i>
             <i className="fa fa-trash"></i>
         </div>
