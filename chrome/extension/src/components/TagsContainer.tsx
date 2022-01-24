@@ -2,7 +2,7 @@ import React from 'react';
 import ItemInput from './ItemInput';
 import { Items, Tag } from '../types/all';
 import TasksAccordion from './TasksAccordion';
-import { addTag } from '../dao/tagDao';
+import { addItem } from '../dao/itemDao';
 
 interface Props {
     items: Items;
@@ -27,7 +27,7 @@ function TagsContainer({ items, onAddTag }: Props) {
                 type="tag"
                 onAddItem={value => {
                     const tag: Tag = { id: 0, name: value };
-                    addTag(tag, () => onAddTag(tag));
+                    addItem("tags", tag, () => onAddTag(tag));
                 }}
             />
         </div>

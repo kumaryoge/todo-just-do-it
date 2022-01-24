@@ -2,7 +2,7 @@ import React from 'react';
 import ItemInput from './ItemInput';
 import { Items, Project } from '../types/all';
 import TasksAccordion from './TasksAccordion';
-import { addProject } from '../dao/projectDao';
+import { addItem } from '../dao/itemDao';
 
 interface Props {
     items: Items;
@@ -27,7 +27,7 @@ function ProjectsContainer({ items, onAddProject }: Props) {
                 type="project"
                 onAddItem={value => {
                     const project: Project = { id: 0, name: value };
-                    addProject(project, () => onAddProject(project));
+                    addItem("projects", project, () => onAddProject(project));
                 }}
             />
         </div>

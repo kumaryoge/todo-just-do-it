@@ -9,7 +9,7 @@ import {
     filterUnscheduledTasks,
     filterCompletedTasks
 } from '../utils/common';
-import { addTask } from '../dao/taskDao';
+import { addItem } from '../dao/itemDao';
 
 interface Props {
     items: Items;
@@ -56,7 +56,7 @@ function TasksContainer({ items, onAddTask }: Props) {
                     type="task"
                     onAddItem={value => {
                         const task: Task = { id: 0, name: value };
-                        addTask(task, () => onAddTask(task));
+                        addItem("tasks", task, () => onAddTask(task));
                     }}
                 />
                 <i className="fa fa-calendar"></i>

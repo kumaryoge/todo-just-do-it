@@ -1,4 +1,4 @@
-import { Items, Project, Tag, Task } from "../types/all";
+import { Item, Items, Project, Tag, Task } from "../types/all";
 
 export function getAllItems(callback: (items: Items) => void) {
     chrome.storage.sync.get(
@@ -9,6 +9,61 @@ export function getAllItems(callback: (items: Items) => void) {
             const tags: Tag[] = result.tags || [];
 
             callback({ tasks, projects, tags });
+        }
+    );
+}
+
+export function addItem<T extends Item>(key: "tasks" | "projects" | "tags", item: T, callback: () => void) {
+    chrome.storage.sync.get(
+        [key],
+        function (result) {
+            const items: T[] = result[key] || [];
+
+            item.id = items.length + 1;
+            const newItems: T[] = items.concat(item);
+
+            chrome.storage.sync.set(
+                { [key]: newItems },
+                function () {
+                    callback();
+                }
+            );
+        }
+    );
+}
+
+export function deleteItem<T extends Item>(key: "tasks" | "projects" | "tags", item: T, callback: () => void) {
+    chrome.storage.sync.get(
+        [key],
+        function (result) {
+            const items: T[] = result[key] || [];
+
+            const newItems: T[] = items.filter(i => i.id !== item.id);
+
+            chrome.storage.sync.set(
+                { [key]: newItems },
+                function () {
+                    callback();
+                }
+            );
+        }
+    );
+}
+
+export function updateItem<T extends Item>(key: "tasks" | "projects" | "tags", item: T, callback: () => void) {
+    chrome.storage.sync.get(
+        [key],
+        function (result) {
+            const items: T[] = result[key] || [];
+
+            const newItems: T[] = items.filter(i => i.id !== item.id).concat(item);
+
+            chrome.storage.sync.set(
+                { [key]: newItems },
+                function () {
+                    callback();
+                }
+            );
         }
     );
 }

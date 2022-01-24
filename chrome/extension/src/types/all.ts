@@ -4,9 +4,12 @@ export type Items = {
     tags: Tag[];
 };
 
-export type Task = {
+export type Item = {
     id: number;
     name: string;
+};
+
+export type Task = Item & {
     description?: string;
     projectId?: number;
     tagIds?: number[];
@@ -16,14 +19,10 @@ export type Task = {
     completed?: boolean;
 };
 
-export type Project = {
-    id: number;
-    name: string;
+export type Project = Item & {
 };
 
-export type Tag = {
-    id: number;
-    name: string;
+export type Tag = Item & {
 };
 
 export type DueDate = {
