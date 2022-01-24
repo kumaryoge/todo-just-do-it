@@ -1,133 +1,133 @@
 @import "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css";
 
 body {
-  background-color: #F8F9F9;
-  width: 300px;
+    background-color: #F8F9F9;
+    width: 300px;
 }
 
 input {
-  background-color: #F8F9F9;
-  width: 100%;
-  border: none;
-  outline: none;
-  padding: 10px 5px 10px 15px;
-  font-size: 14px;
+    background-color: #F8F9F9;
+    width: 100%;
+    border: none;
+    outline: none;
+    padding: 10px 5px 10px 15px;
+    font-size: 14px;
 }
 
 .task-input-container {
-  display: flex;
+    display: flex;
 }
 
 .task-input-container i {
-  padding: 10px 5px;
-  font-size: 14px;
-  color: darkgray;
+    padding: 10px 5px;
+    font-size: 14px;
+    color: darkgray;
 }
 
 #greeting {
-  padding-top: 5px;
-  font-size: 14px;
-  font-weight: bold;
-  text-align: center;
-  color: slategray;
+    padding-top: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    color: slategray;
 }
 
 .today {
-  color: red;
+    color: red;
 }
 
 .tomorrow {
-  color: darkred;
+    color: darkred;
 }
 
 .upcoming {
-  color: darkviolet;
+    color: darkviolet;
 }
 
 .unscheduled {
-  color: blue;
+    color: blue;
 }
 
 .completed {
-  color: green;
+    color: green;
 }
 
 .project {
-  color: darkorange;
+    color: darkorange;
 }
 
 .tag {
-  color: saddlebrown;
+    color: saddlebrown;
 }
 
 /* Separator */
 
 .separator {
-  display: flex;
-  align-items: center;
-  text-align: center;
-  color: darkgray;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: darkgray;
 }
 
 .separator::before,
 .separator::after {
-  content: '';
-  flex: 1;
-  border-bottom: 1px solid darkgray;
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid darkgray;
 }
 
 .separator:not(:empty)::before {
-  margin-right: .25em;
+    margin-right: .25em;
 }
 
 .separator:not(:empty)::after {
-  margin-left: .25em;
+    margin-left: .25em;
 }
 
 /* Accordion expand/collapse */
 
 .container {
-  width: 100%;
-  max-width: 600px;
+    width: 100%;
+    max-width: 600px;
 }
 
 button.accordion {
-  width: 100%;
-  background-color: whitesmoke;
-  border: none;
-  outline: none;
-  text-align: left;
-  padding: 10px 15px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.2s linear;
+    width: 100%;
+    background-color: whitesmoke;
+    border: none;
+    outline: none;
+    text-align: left;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s linear;
 }
 
 button.accordion:after {
-  content: '\f078';
-  font-family: "fontawesome";
-  font-size: 14px;
-  float: right;
+    content: '\f078';
+    font-family: "fontawesome";
+    font-size: 14px;
+    float: right;
 }
 
 button.accordion.is-open:after {
-  content: '\f077';
+    content: '\f077';
 }
 
 button.accordion:hover, button.accordion.is-open {
-  background-color: #ddd;
+    background-color: #ddd;
 }
 
 .accordion-content {
-  background-color: white;
-  border-left: 1px solid whitesmoke;
-  border-right: 1px solid whitesmoke;
-  padding: 0 15px;
-  font-size: 14px;
-  overflow: hidden;
-  transition: max-height 0.2s ease-in-out;
+    background-color: #F8F9F9;
+    border-left: 1px solid whitesmoke;
+    border-right: 1px solid whitesmoke;
+    padding: 0;
+    font-size: 14px;
+    overflow: hidden;
+    transition: max-height 0.2s ease-in-out;
 }
 
 .accordion-content.is-closed {
-  max-height: 0;
+    max-height: 0;
 }

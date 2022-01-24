@@ -1,11 +1,15 @@
 import React from 'react';
+import { Items, Task } from '../types/all';
+import TaskContainer from './TaskContainer';
 
 interface Props {
     type: "today" | "tomorrow" | "upcoming" | "unscheduled" | "completed" | "project" | "tag";
     name: string;
+    items: Items;
+    taskFilter(tasks: Task[]): Task[];
 }
 
-const Accordion: React.FC<Props> = ({ type, name }) => {
+function TasksAccordion({ type, name, items, taskFilter }: Props) {
     const [isOpen, setOpen] = React.useState(false);
 
     return (
@@ -14,15 +18,17 @@ const Accordion: React.FC<Props> = ({ type, name }) => {
                 className={type + " accordion " + (isOpen ? "is-open" : "")}
                 onClick={() => setOpen(!isOpen)}
             >
-                {name}
+                {name + " (" + taskFilter(items.tasks).length + ")"}
             </button>
             <div
                 className={"accordion-content " + (!isOpen ? "is-closed" : "")}
             >
-                TODO
+                {taskFilter(items.tasks).map(task => (
+                    <TaskContainer key={task.id} task={task} allProjects={items.projects} allTags={items.tags} />
+                ))}
             </div>
         </div>
     );
 }
 
-export default Accordion;
+export default TasksAccordion;

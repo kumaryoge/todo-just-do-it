@@ -4,7 +4,7 @@ interface Props {
     type: "task" | "project" | "tag";
 }
 
-const ItemInput: React.FC<Props> = ({ type }) => {
+function ItemInput({ type }: Props) {
     return (
         <input type="text" placeholder={"Add a " + type + ", press enter to save"} />
     );
