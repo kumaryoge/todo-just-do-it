@@ -4,7 +4,7 @@ import TasksContainer from './TasksContainer';
 import ProjectsContainer from './ProjectsContainer';
 import TagsContainer from './TagsContainer';
 import { Items } from '../types/all';
-import { getAllItems } from '../dao/storage';
+import { getAllItems } from '../dao/itemDao';
 
 function App() {
     const [items, setItems] = React.useState<Items>({
