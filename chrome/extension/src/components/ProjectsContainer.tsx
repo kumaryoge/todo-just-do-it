@@ -23,13 +23,15 @@ function ProjectsContainer({ items, onAddProject }: Props) {
                     />
                 ))}
             </div>
-            <ItemInput
-                type="project"
-                onAddItem={value => {
-                    const project: Project = { id: 0, name: value };
-                    addItem("projects", project, () => onAddProject(project));
-                }}
-            />
+            <div className="input-container">
+                <ItemInput
+                    type="project"
+                    onAddItem={value => {
+                        const project: Project = { id: 0, name: value };
+                        addItem("projects", project, () => onAddProject(project));
+                    }}
+                />
+            </div>
         </div>
     );
 }

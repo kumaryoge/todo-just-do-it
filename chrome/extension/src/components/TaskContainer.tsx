@@ -17,7 +17,6 @@ function TaskContainer({ task, allProjects, allTags }: Props) {
                 readOnly={true}
             />
             <i className="fa fa-edit"></i>
-            <i className="fa fa-trash"></i>
         </div>
     );
 }

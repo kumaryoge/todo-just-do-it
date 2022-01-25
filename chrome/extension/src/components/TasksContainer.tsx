@@ -51,7 +51,7 @@ function TasksContainer({ items, onAddTask }: Props) {
                     taskFilter={filterCompletedTasks}
                 />
             </div>
-            <div className="task-container">
+            <div className="input-container">
                 <ItemInput
                     type="task"
                     onAddItem={value => {

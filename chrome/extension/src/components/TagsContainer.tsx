@@ -23,13 +23,15 @@ function TagsContainer({ items, onAddTag }: Props) {
                     />
                 ))}
             </div>
-            <ItemInput
-                type="tag"
-                onAddItem={value => {
-                    const tag: Tag = { id: 0, name: value };
-                    addItem("tags", tag, () => onAddTag(tag));
-                }}
-            />
+            <div className="input-container">
+                <ItemInput
+                    type="tag"
+                    onAddItem={value => {
+                        const tag: Tag = { id: 0, name: value };
+                        addItem("tags", tag, () => onAddTag(tag));
+                    }}
+                />
+            </div>
         </div>
     );
 }
