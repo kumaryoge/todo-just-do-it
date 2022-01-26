@@ -1,5 +1,6 @@
 import React from 'react';
 import { Items, Task } from '../types/all';
+import { projectIcon, smartListIcon, tagIcon } from '../utils/icons';
 import TaskContainer from './TaskContainer';
 
 interface Props {
@@ -18,6 +19,7 @@ function TasksAccordion({ type, name, items, taskFilter }: Props) {
                 className={type + " accordion " + (isOpen ? "is-open" : "")}
                 onClick={() => setOpen(!isOpen)}
             >
+                {type === "project" ? projectIcon : (type === "tag" ? tagIcon : smartListIcon)}
                 {name + " (" + taskFilter(items.tasks).length + ")"}
             </button>
             <div

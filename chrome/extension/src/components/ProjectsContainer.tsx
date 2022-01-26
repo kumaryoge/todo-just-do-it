@@ -3,6 +3,7 @@ import ItemInput from './ItemInput';
 import { Items, Project } from '../types/all';
 import TasksAccordion from './TasksAccordion';
 import { addItem } from '../dao/itemDao';
+import { addIcon } from '../utils/icons';
 
 interface Props {
     items: Items;
@@ -24,6 +25,7 @@ function ProjectsContainer({ items, onAddProject }: Props) {
                 ))}
             </div>
             <div className="input-container">
+                {addIcon}
                 <ItemInput
                     type="project"
                     onAddItem={value => {

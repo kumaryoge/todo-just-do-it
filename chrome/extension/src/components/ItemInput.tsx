@@ -11,7 +11,7 @@ function ItemInput({ type, onAddItem }: Props) {
     return (
         <input
             type="text"
-            placeholder={"Add a " + type + ", press enter to save"}
+            placeholder={"Add " + type + ", press enter to save"}
             value={value}
             onChange={event => {
                 setValue(event.target.value);

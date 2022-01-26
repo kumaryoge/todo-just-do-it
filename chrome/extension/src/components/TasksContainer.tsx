@@ -10,6 +10,7 @@ import {
     filterCompletedTasks
 } from '../utils/common';
 import { addItem } from '../dao/itemDao';
+import { addIcon, dateIcon, projectIcon, tagsIcon } from '../utils/icons';
 
 interface Props {
     items: Items;
@@ -52,6 +53,7 @@ function TasksContainer({ items, onAddTask }: Props) {
                 />
             </div>
             <div className="input-container">
+                {addIcon}
                 <ItemInput
                     type="task"
                     onAddItem={value => {
@@ -59,9 +61,9 @@ function TasksContainer({ items, onAddTask }: Props) {
                         addItem("tasks", task, () => onAddTask(task));
                     }}
                 />
-                <i className="fa fa-calendar"></i>
-                <i className="fa fa-list"></i>
-                <i className="fa fa-tags"></i>
+                {dateIcon}
+                {projectIcon}
+                {tagsIcon}
             </div>
         </div>
     );
