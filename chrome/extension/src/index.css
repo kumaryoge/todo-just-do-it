@@ -10,7 +10,7 @@ input {
     width: 100%;
     border: none;
     outline: none;
-    padding: 0;
+    padding-right: 5px;
     font-size: 14px;
     color: darkslategray;
 }
@@ -24,9 +24,12 @@ input.is-completed {
     padding: 10px 15px;
 }
 
-.input-container .icon, .task-container .icon {
-    padding: 0 3px;
+.icon {
+    padding-right: 5px;
     font-size: 14px;
+}
+
+.input-container .icon, .task-container .icon {
     color: darkgray;
 }
 
@@ -107,11 +110,6 @@ button.accordion {
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.2s linear;
-}
-
-button.accordion .icon {
-    padding: 0 5px 0 0;
-    font-size: 14px;
 }
 
 button.accordion:after {
