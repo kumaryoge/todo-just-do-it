@@ -25,7 +25,7 @@ input.is-completed {
 }
 
 .item-container.bordered {
-    border: 1px solid #ddd;
+    border: 0.5px solid #ddd;
 }
 
 .icon {
@@ -53,9 +53,10 @@ input.is-completed {
 }
 
 .empty-list {
-    font-size: 14px;
+    font-size: 12px;
     text-align: center;
     color: slategray;
+    padding: 0;
 }
 
 .today {
