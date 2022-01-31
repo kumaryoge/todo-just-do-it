@@ -8,13 +8,12 @@ import TaskContainer from './TaskContainer';
 interface Props {
     type: "today" | "tomorrow" | "upcoming" | "unscheduled" | "completed" | "project" | "tag";
     name: string;
-    items: Items;
-    taskFilter(tasks: Task[]): Task[];
+    tasks: Task[];
     onChange(): void;
     item?: Item
 }
 
-function Accordion({ type, name, items, taskFilter, onChange, item }: Props) {
+function Accordion({ type, name, tasks, onChange, item }: Props) {
     const [isOpen, setOpen] = React.useState(false);
 
     return (
@@ -24,21 +23,19 @@ function Accordion({ type, name, items, taskFilter, onChange, item }: Props) {
                 onClick={() => setOpen(!isOpen)}
             >
                 {type === "project" ? icon("project") : (type === "tag" ? icon("tag") : icon("smartList"))}
-                {name + " (" + taskFilter(items.tasks).length + ")"}
+                {name + " (" + tasks.length + ")"}
             </button>
             <div
                 className={"accordion-content " + (!isOpen ? "is-closed" : "")}
             >
                 {item && type === "project" && <ProjectContainer project={item} onChange={onChange} />}
                 {item && type === "tag" && <TagContainer tag={item} onChange={onChange} />}
-                {taskFilter(items.tasks).length === 0
+                {tasks.length === 0
                     ? <p className="empty-list">No tasks available!</p>
-                    : taskFilter(items.tasks).map(task => (
+                    : tasks.map(task => (
                         <TaskContainer
                             key={task.id}
                             task={task}
-                            allProjects={items.projects}
-                            allTags={items.tags}
                             onChange={onChange}
                         />
                     ))}

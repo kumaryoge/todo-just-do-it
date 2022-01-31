@@ -6,12 +6,10 @@ import ItemView from './ItemView';
 
 interface Props {
     task: Task;
-    allProjects: Project[];
-    allTags: Tag[];
     onChange(): void;
 }
 
-function TaskContainer({ task, allProjects, allTags, onChange }: Props) {
+function TaskContainer({ task, onChange }: Props) {
     const toggleCompletion = () => {
         task.completed = !task.completed;
         updateItem("tasks", task, onChange);

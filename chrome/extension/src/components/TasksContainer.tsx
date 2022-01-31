@@ -24,36 +24,31 @@ function TasksContainer({ items, onChange }: Props) {
                 <Accordion
                     type="today"
                     name="Today"
-                    items={items}
-                    taskFilter={filterTodaysTasks}
+                    tasks={filterTodaysTasks(items.tasks)}
                     onChange={onChange}
                 />
                 <Accordion
                     type="tomorrow"
                     name="Tomorrow"
-                    items={items}
-                    taskFilter={filterTomorrowsTasks}
+                    tasks={filterTomorrowsTasks(items.tasks)}
                     onChange={onChange}
                 />
                 <Accordion
                     type="upcoming"
                     name="Upcoming"
-                    items={items}
-                    taskFilter={filterUpcomingTasks}
+                    tasks={filterUpcomingTasks(items.tasks)}
                     onChange={onChange}
                 />
                 <Accordion
                     type="unscheduled"
                     name="Unscheduled"
-                    items={items}
-                    taskFilter={filterUnscheduledTasks}
+                    tasks={filterUnscheduledTasks(items.tasks)}
                     onChange={onChange}
                 />
                 <Accordion
                     type="completed"
                     name="Completed"
-                    items={items}
-                    taskFilter={filterCompletedTasks}
+                    tasks={filterCompletedTasks(items.tasks)}
                     onChange={onChange}
                 />
             </div>

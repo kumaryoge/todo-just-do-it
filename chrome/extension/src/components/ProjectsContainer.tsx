@@ -19,8 +19,7 @@ function ProjectsContainer({ items, onChange }: Props) {
                         key={project.id}
                         type="project"
                         name={project.name}
-                        items={items}
-                        taskFilter={(tasks) => tasks.filter(task => task.projectId === project.id)}
+                        tasks={items.tasks.filter(task => task.projectId === project.id)}
                         onChange={onChange}
                         item={project}
                     />

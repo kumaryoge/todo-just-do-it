@@ -19,8 +19,7 @@ function TagsContainer({ items, onChange }: Props) {
                         key={tag.id}
                         type="tag"
                         name={tag.name}
-                        items={items}
-                        taskFilter={(tasks) => tasks.filter(task => task.tagIds && task.tagIds.includes(tag.id))}
+                        tasks={items.tasks.filter(task => task.tagIds && task.tagIds.includes(tag.id))}
                         onChange={onChange}
                         item={tag}
                     />
