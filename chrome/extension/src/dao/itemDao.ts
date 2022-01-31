@@ -1,13 +1,30 @@
 import { Item, Items, Project, Tag, Task } from "../types/all";
 
+const currentItems: Items = {
+    tasks: [],
+    projects: [],
+    tags: []
+};
+
 export function getAllItems(callback: (items: Items) => void) {
+    if (currentItems.tasks.length || currentItems.projects.length || currentItems.tags.length) {
+        callback({
+            tasks: currentItems.tasks.slice(),
+            projects: currentItems.projects.slice(),
+            tags: currentItems.tags.slice()
+        });
+        return;
+    }
     chrome.storage.sync.get(
         ["tasks", "projects", "tags"],
         function (result) {
-            const tasks: Task[] = result.tasks || [];
-            const projects: Project[] = result.projects || [];
-            const tags: Tag[] = result.tags || [];
+            const tasks: Task[] = (result.tasks && result.tasks.list) || [];
+            const projects: Project[] = (result.projects && result.projects.list) || [];
+            const tags: Tag[] = (result.tags && result.tags.list) || [];
 
+            currentItems.tasks = tasks;
+            currentItems.projects = projects;
+            currentItems.tags = tags;
             callback({ tasks, projects, tags });
         }
     );
@@ -17,14 +34,16 @@ export function addItem<T extends Item>(key: "tasks" | "projects" | "tags", item
     chrome.storage.sync.get(
         [key],
         function (result) {
-            const items: T[] = result[key] || [];
+            const itemsData = result[key] || { counter: 0, list: [] };
+            const items: T[] = itemsData.list;
 
-            item.id = items.length + 1;
+            item.id = itemsData.counter + 1;
             const newItems: T[] = items.concat(item);
 
             chrome.storage.sync.set(
-                { [key]: newItems },
+                { [key]: { counter: itemsData.counter + 1, list: newItems } },
                 function () {
+                    currentItems[key] = newItems;
                     callback();
                 }
             );
@@ -36,13 +55,15 @@ export function deleteItem<T extends Item>(key: "tasks" | "projects" | "tags", i
     chrome.storage.sync.get(
         [key],
         function (result) {
-            const items: T[] = result[key] || [];
+            const itemsData = result[key] || { counter: 0, list: [] };
+            const items: T[] = itemsData.list;
 
             const newItems: T[] = items.filter(i => i.id !== item.id);
 
             chrome.storage.sync.set(
-                { [key]: newItems },
+                { [key]: { counter: itemsData.counter, list: newItems } },
                 function () {
+                    currentItems[key] = newItems;
                     callback();
                 }
             );
@@ -54,13 +75,20 @@ export function updateItem<T extends Item>(key: "tasks" | "projects" | "tags", i
     chrome.storage.sync.get(
         [key],
         function (result) {
-            const items: T[] = result[key] || [];
+            const itemsData = result[key] || { counter: 0, list: [] };
+            const items: T[] = itemsData.list;
 
-            const newItems: T[] = items.filter(i => i.id !== item.id).concat(item);
+            for (let i = 0; i < items.length; ++i) {
+                if (items[i].id === item.id) {
+                    items[i] = item;
+                    break;
+                }
+            }
 
             chrome.storage.sync.set(
-                { [key]: newItems },
+                { [key]: { counter: itemsData.counter, list: items } },
                 function () {
+                    currentItems[key] = items;
                     callback();
                 }
             );

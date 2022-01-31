@@ -1,36 +1,38 @@
 import React from 'react';
 import ItemInput from './ItemInput';
 import { Items, Project } from '../types/all';
-import TasksAccordion from './TasksAccordion';
+import Accordion from './Accordion';
 import { addItem } from '../dao/itemDao';
-import { addIcon } from '../utils/icons';
+import { icon } from '../utils/icons';
 
 interface Props {
     items: Items;
-    onAddProject(project: Project): void;
+    onChange(): void;
 }
 
-function ProjectsContainer({ items, onAddProject }: Props) {
+function ProjectsContainer({ items, onChange }: Props) {
     return (
         <div>
             <div className="container">
                 {items.projects.map(project => (
-                    <TasksAccordion
+                    <Accordion
                         key={project.id}
                         type="project"
                         name={project.name}
                         items={items}
                         taskFilter={(tasks) => tasks.filter(task => task.projectId === project.id)}
+                        onChange={onChange}
+                        item={project}
                     />
                 ))}
             </div>
-            <div className="input-container">
-                {addIcon}
+            <div className="item-container">
+                {icon("add")}
                 <ItemInput
                     type="project"
                     onAddItem={value => {
                         const project: Project = { id: 0, name: value };
-                        addItem("projects", project, () => onAddProject(project));
+                        addItem("projects", project, onChange);
                     }}
                 />
             </div>

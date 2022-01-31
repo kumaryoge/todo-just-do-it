@@ -1,6 +1,6 @@
 import React from 'react';
 import ItemInput from './ItemInput';
-import TasksAccordion from './TasksAccordion';
+import Accordion from './Accordion';
 import { Items, Task } from '../types/all';
 import {
     filterTodaysTasks,
@@ -10,60 +10,65 @@ import {
     filterCompletedTasks
 } from '../utils/common';
 import { addItem } from '../dao/itemDao';
-import { addIcon, dateIcon, projectIcon, tagsIcon } from '../utils/icons';
+import { icon } from '../utils/icons';
 
 interface Props {
     items: Items;
-    onAddTask(task: Task): void;
+    onChange(): void;
 }
 
-function TasksContainer({ items, onAddTask }: Props) {
+function TasksContainer({ items, onChange }: Props) {
     return (
         <div>
             <div className="container">
-                <TasksAccordion
+                <Accordion
                     type="today"
                     name="Today"
                     items={items}
                     taskFilter={filterTodaysTasks}
+                    onChange={onChange}
                 />
-                <TasksAccordion
+                <Accordion
                     type="tomorrow"
                     name="Tomorrow"
                     items={items}
                     taskFilter={filterTomorrowsTasks}
+                    onChange={onChange}
                 />
-                <TasksAccordion
+                <Accordion
                     type="upcoming"
                     name="Upcoming"
                     items={items}
                     taskFilter={filterUpcomingTasks}
+                    onChange={onChange}
                 />
-                <TasksAccordion
+                <Accordion
                     type="unscheduled"
                     name="Unscheduled"
                     items={items}
                     taskFilter={filterUnscheduledTasks}
+                    onChange={onChange}
                 />
-                <TasksAccordion
+                <Accordion
                     type="completed"
                     name="Completed"
                     items={items}
                     taskFilter={filterCompletedTasks}
+                    onChange={onChange}
                 />
             </div>
-            <div className="input-container">
-                {addIcon}
+            <div className="item-container">
+                {icon("add")}
                 <ItemInput
                     type="task"
                     onAddItem={value => {
                         const task: Task = { id: 0, name: value };
-                        addItem("tasks", task, () => onAddTask(task));
+                        addItem("tasks", task, onChange);
                     }}
                 />
-                {dateIcon}
-                {projectIcon}
-                {tagsIcon}
+                {icon("date")}
+                {icon("project")}
+                {icon("tags")}
             </div>
         </div>
     );

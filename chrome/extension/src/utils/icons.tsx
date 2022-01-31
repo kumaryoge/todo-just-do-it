@@ -1,9 +1,19 @@
-export const smartListIcon = <span className="icon fa fa-circle"></span>;
-export const projectIcon = <span className="icon fa fa-tasks"></span>;
-export const tagIcon = <span className="icon fa fa-tag"></span>;
-export const dateIcon = <span className="icon fa fa-calendar"></span>;
-export const tagsIcon = <span className="icon fa fa-tags"></span>;
-export const taskIcon = <span className="icon">&#9711;</span>;
-export const addIcon = <span className="icon">&#65291;</span>;
-export const deleteIcon = <span className="icon fa fa-trash"></span>;
-export const updateIcon = <span className="icon fa fa-edit"></span>;
+const Icons = {
+    smartList: "fa fa-circle",
+    project: "fa fa-tasks",
+    tag: "fa fa-tag",
+    date: "fa fa-calendar",
+    tags: "fa fa-tags",
+    task: "fa fa-circle-o",
+    completedTask: "fa fa-check-circle",
+    add: "fa fa-plus",
+    delete: "fa fa-trash",
+    update: "fa fa-edit",
+};
+
+export function icon(type: keyof typeof Icons, onClick?: () => void) {
+    if (onClick) {
+        return <span className={"icon clickable " + Icons[type]} onClick={onClick}></span>;
+    }
+    return <span className={"icon " + Icons[type]}></span>;
+}

@@ -2,7 +2,7 @@
 
 body {
     background-color: #F8F9F9;
-    width: 300px;
+    width: 350px;
 }
 
 input {
@@ -19,9 +19,13 @@ input.is-completed {
     text-decoration: line-through;
 }
 
-.input-container, .task-container {
+.item-container {
     display: flex;
     padding: 10px 15px;
+}
+
+.item-container.bordered {
+    border: 1px solid #ddd;
 }
 
 .icon {
@@ -29,14 +33,27 @@ input.is-completed {
     font-size: 14px;
 }
 
-.input-container .icon, .task-container .icon {
+.icon.clickable {
+    cursor: pointer;
+}
+
+.item-container .icon {
     color: darkgray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #greeting {
     padding-top: 5px;
     font-size: 14px;
     font-weight: bold;
+    text-align: center;
+    color: slategray;
+}
+
+.empty-list {
+    font-size: 14px;
     text-align: center;
     color: slategray;
 }
@@ -62,11 +79,11 @@ input.is-completed {
 }
 
 .project {
-    color: darkorange;
+    color: brown;
 }
 
 .tag {
-    color: saddlebrown;
+    color: darkolivegreen;
 }
 
 /* Separator */
@@ -129,8 +146,7 @@ button.accordion:hover, button.accordion.is-open {
 
 .accordion-content {
     background-color: #F8F9F9;
-    border-left: 1px solid whitesmoke;
-    border-right: 1px solid whitesmoke;
+    border: 0.5px solid #ddd;
     padding: 0;
     font-size: 14px;
     overflow: hidden;

@@ -26,6 +26,7 @@ function ItemInput({ type, onAddItem }: Props) {
                     }
                 }
             }}
+            onBlur={() => setValue("")}
         />
     );
 }
