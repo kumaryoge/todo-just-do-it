@@ -1,7 +1,6 @@
 import React from 'react';
-import ItemInput from './ItemInput';
 import Accordion from './Accordion';
-import { Items, Task } from '../types/all';
+import { Items } from '../types/all';
 import {
     filterTodaysTasks,
     filterTomorrowsTasks,
@@ -9,8 +8,7 @@ import {
     filterUnscheduledTasks,
     filterCompletedTasks
 } from '../utils/common';
-import { addItem } from '../dao/itemDao';
-import { icon } from '../utils/icons';
+import TaskContainer from './TaskContainer';
 
 interface Props {
     items: Items;
@@ -52,19 +50,7 @@ function TasksContainer({ items, onChange }: Props) {
                     onChange={onChange}
                 />
             </div>
-            <div className="item-container">
-                {icon("add")}
-                <ItemInput
-                    type="task"
-                    onAddItem={value => {
-                        const task: Task = { id: 0, name: value };
-                        addItem("tasks", task, onChange);
-                    }}
-                />
-                {icon("date")}
-                {icon("project")}
-                {icon("tags")}
-            </div>
+            <TaskContainer onChange={onChange} />
         </div>
     );
 }

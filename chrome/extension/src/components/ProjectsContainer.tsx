@@ -1,9 +1,7 @@
 import React from 'react';
-import ItemInput from './ItemInput';
-import { Items, Project } from '../types/all';
+import { Items } from '../types/all';
 import Accordion from './Accordion';
-import { addItem } from '../dao/itemDao';
-import { icon } from '../utils/icons';
+import ProjectContainer from './ProjectContainer';
 
 interface Props {
     items: Items;
@@ -25,16 +23,7 @@ function ProjectsContainer({ items, onChange }: Props) {
                     />
                 ))}
             </div>
-            <div className="item-container">
-                {icon("add")}
-                <ItemInput
-                    type="project"
-                    onAddItem={value => {
-                        const project: Project = { id: 0, name: value };
-                        addItem("projects", project, onChange);
-                    }}
-                />
-            </div>
+            <ProjectContainer onChange={onChange} />
         </div>
     );
 }

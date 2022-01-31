@@ -1,9 +1,7 @@
 import React from 'react';
-import ItemInput from './ItemInput';
-import { Items, Tag } from '../types/all';
+import { Items } from '../types/all';
 import Accordion from './Accordion';
-import { addItem } from '../dao/itemDao';
-import { icon } from '../utils/icons';
+import TagContainer from './TagContainer';
 
 interface Props {
     items: Items;
@@ -25,16 +23,7 @@ function TagsContainer({ items, onChange }: Props) {
                     />
                 ))}
             </div>
-            <div className="item-container">
-                {icon("add")}
-                <ItemInput
-                    type="tag"
-                    onAddItem={value => {
-                        const tag: Tag = { id: 0, name: value };
-                        addItem("tags", tag, onChange);
-                    }}
-                />
-            </div>
+            <TagContainer onChange={onChange} />
         </div>
     );
 }
