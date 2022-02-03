@@ -1,6 +1,5 @@
 import React from 'react';
 import { Items } from '../types/all';
-import Accordion from './Accordion';
 import TagContainer from './TagContainer';
 
 interface Props {
@@ -11,18 +10,13 @@ interface Props {
 function TagsContainer({ items, onChange }: Props) {
     return (
         <div>
-            <div className="container">
-                {items.tags.map(tag => (
-                    <Accordion
-                        key={tag.id}
-                        type="tag"
-                        name={tag.name}
-                        tasks={items.tasks.filter(task => task.tagIds && task.tagIds.includes(tag.id))}
-                        onChange={onChange}
-                        item={tag}
-                    />
-                ))}
-            </div>
+            {items.tags.map(tag => (
+                <TagContainer
+                    key={tag.id}
+                    tag={tag}
+                    onChange={onChange}
+                />
+            ))}
             <TagContainer onChange={onChange} />
         </div>
     );

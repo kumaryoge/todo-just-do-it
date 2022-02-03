@@ -50,6 +50,28 @@ function TasksContainer({ items, onChange }: Props) {
                     onChange={onChange}
                 />
             </div>
+            <div className="container">
+                {items.projects.map(project => (
+                    <Accordion
+                        key={project.id}
+                        type="project"
+                        name={project.name}
+                        tasks={items.tasks.filter(task => task.projectId === project.id)}
+                        onChange={onChange}
+                    />
+                ))}
+            </div>
+            <div className="container">
+                {items.tags.map(tag => (
+                    <Accordion
+                        key={tag.id}
+                        type="tag"
+                        name={tag.name}
+                        tasks={items.tasks.filter(task => task.tagIds && task.tagIds.includes(tag.id))}
+                        onChange={onChange}
+                    />
+                ))}
+            </div>
             <TaskContainer onChange={onChange} />
         </div>
     );

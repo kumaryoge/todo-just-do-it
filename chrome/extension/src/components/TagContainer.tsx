@@ -12,7 +12,7 @@ interface Props {
 
 function TagContainer({ tag, onChange }: Props) {
     return (
-        <div className={"item-container " + (tag ? "bordered" : "")}>
+        <div className="item-container">
             {!tag ? icon("add") : icon("tag")}
             {!tag ?
                 <ItemInput

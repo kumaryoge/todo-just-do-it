@@ -24,10 +24,6 @@ input.is-completed {
     padding: 10px 15px;
 }
 
-.item-container.bordered {
-    border: 0.5px solid #ddd;
-}
-
 .icon {
     padding-right: 5px;
     font-size: 14px;

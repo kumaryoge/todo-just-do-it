@@ -9,6 +9,8 @@ const Icons = {
     add: "fa fa-plus",
     delete: "fa fa-trash",
     update: "fa fa-edit",
+    yes: "fa fa-check",
+    no: "fa fa-times",
 };
 
 export function icon(type: keyof typeof Icons, onClick?: () => void) {

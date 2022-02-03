@@ -1,8 +1,6 @@
 import React from 'react';
-import { Item, Items, Task } from '../types/all';
+import { Task } from '../types/all';
 import { icon } from '../utils/icons';
-import ProjectContainer from './ProjectContainer';
-import TagContainer from './TagContainer';
 import TaskContainer from './TaskContainer';
 
 interface Props {
@@ -10,10 +8,9 @@ interface Props {
     name: string;
     tasks: Task[];
     onChange(): void;
-    item?: Item
 }
 
-function Accordion({ type, name, tasks, onChange, item }: Props) {
+function Accordion({ type, name, tasks, onChange }: Props) {
     const [isOpen, setOpen] = React.useState(false);
 
     return (
@@ -28,8 +25,6 @@ function Accordion({ type, name, tasks, onChange, item }: Props) {
             <div
                 className={"accordion-content " + (!isOpen ? "is-closed" : "")}
             >
-                {item && type === "project" && <ProjectContainer project={item} onChange={onChange} />}
-                {item && type === "tag" && <TagContainer tag={item} onChange={onChange} />}
                 {tasks.length === 0
                     ? <p className="empty-list">No tasks available!</p>
                     : tasks.map(task => (

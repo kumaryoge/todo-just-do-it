@@ -12,7 +12,7 @@ interface Props {
 
 function ProjectContainer({ project, onChange }: Props) {
     return (
-        <div className={"item-container " + (project ? "bordered" : "")}>
+        <div className="item-container">
             {!project ? icon("add") : icon("project")}
             {!project ?
                 <ItemInput
