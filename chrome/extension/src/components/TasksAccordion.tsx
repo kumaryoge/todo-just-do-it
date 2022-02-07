@@ -13,13 +13,8 @@ interface Props {
 }
 
 function TasksAccordion({ type, name, tasks, onChange }: Props) {
-    const [isExpanded, setExpanded] = React.useState(type === "today");
-
     return (
-        <Accordion
-            expanded={isExpanded}
-            onChange={(event, newExpanded) => setExpanded(newExpanded)}
-        >
+        <Accordion>
             <AccordionSummary
                 expandIcon={<ExpandMore className={type} />}
             >
