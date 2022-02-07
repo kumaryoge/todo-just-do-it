@@ -4,7 +4,6 @@ import {
     CheckCircleOutlineRounded,
     EventOutlined,
     AddOutlined,
-    DeleteOutlined,
     TaskAltRounded,
     WbTwilightRounded,
     WbSunnyRounded,
@@ -13,6 +12,7 @@ import {
     DateRangeRounded
 } from "@mui/icons-material";
 import { TaskListType } from "../types/all";
+import DeleteIcon from "./DeleteIcon";
 
 export function taskListIcon(type: TaskListType) {
     switch (type) {
@@ -57,8 +57,8 @@ export function addIcon(onClick?: () => void) {
     return <AddOutlined className={iconClasses(onClick)} fontSize="small" onClick={onClick} />;
 }
 
-export function deleteIcon(onClick?: () => void) {
-    return <DeleteOutlined className={iconClasses(onClick)} fontSize="small" onClick={onClick} />;
+export function deleteIcon(onClick: () => void) {
+    return <DeleteIcon classes={iconClasses(onClick)} onClick={onClick} />;
 }
 
 function iconClasses(onClick?: () => void) {
