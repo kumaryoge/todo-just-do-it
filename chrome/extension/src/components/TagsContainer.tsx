@@ -1,6 +1,9 @@
 import React from 'react';
 import { Items } from '../types/all';
+import { taskListIcon } from '../utils/icons';
 import TagContainer from './TagContainer';
+import { ExpandMore } from '@mui/icons-material';
+import { Accordion, AccordionDetails, AccordionSummary, Stack, Typography } from '@mui/material';
 
 interface Props {
     items: Items;
@@ -9,16 +12,32 @@ interface Props {
 
 function TagsContainer({ items, onChange }: Props) {
     return (
-        <div>
-            {items.tags.map(tag => (
-                <TagContainer
-                    key={tag.id}
-                    tag={tag}
-                    onChange={onChange}
-                />
-            ))}
-            <TagContainer onChange={onChange} />
-        </div>
+        <Accordion>
+            <AccordionSummary
+                expandIcon={<ExpandMore className="tag" />}
+            >
+                <Stack
+                    className="tag"
+                    direction="row"
+                    justifyContent="center"
+                    alignItems="center"
+                    spacing={1}
+                >
+                    {taskListIcon("tag")}
+                    <Typography>{"Tags (" + items.tags.length + ")"}</Typography>
+                </Stack>
+            </AccordionSummary>
+            <AccordionDetails>
+                {items.tags.map(tag => (
+                    <TagContainer
+                        key={tag.id}
+                        tag={tag}
+                        onChange={onChange}
+                    />
+                ))}
+                <TagContainer onChange={onChange} />
+            </AccordionDetails>
+        </Accordion>
     );
 }
 

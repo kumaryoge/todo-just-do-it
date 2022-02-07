@@ -5,6 +5,7 @@ import ProjectsContainer from './ProjectsContainer';
 import TagsContainer from './TagsContainer';
 import { Items } from '../types/all';
 import { getAllItems } from '../dao/itemDao';
+import { Divider, Typography } from '@mui/material';
 
 function App() {
     const [items, setItems] = React.useState<Items>({
@@ -18,16 +19,16 @@ function App() {
 
     return (
         <div>
-            <p id="greeting">{getGreeting()}</p>
+            <Typography className="greeting">{getGreeting()}</Typography>
 
-            <div className="separator">Tasks</div>
-            <TasksContainer items={items} onChange={updateAllItems}/>
+            <Divider className="divider">Tasks</Divider>
+            <TasksContainer items={items} onChange={updateAllItems} />
 
-            <div className="separator">Projects</div>
-            <ProjectsContainer items={items} onChange={updateAllItems}/>
+            <Divider className="divider">Projects</Divider>
+            <ProjectsContainer items={items} onChange={updateAllItems} />
 
-            <div className="separator">Tags</div>
-            <TagsContainer items={items} onChange={updateAllItems}/>
+            <Divider className="divider">Tags</Divider>
+            <TagsContainer items={items} onChange={updateAllItems} />
         </div>
     );
 }

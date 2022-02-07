@@ -1,58 +1,32 @@
-@import "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css";
+@import '@fontsource/roboto/300.css';
+@import '@fontsource/roboto/400.css';
+@import '@fontsource/roboto/500.css';
+@import '@fontsource/roboto/700.css';
 
 body {
-    background-color: #F8F9F9;
     width: 350px;
 }
 
-input {
-    background-color: #F8F9F9;
+.input {
     width: 100%;
-    border: none;
-    outline: none;
-    padding-right: 5px;
-    font-size: 14px;
-    color: darkslategray;
 }
 
-input.is-completed {
+.input.is-completed {
     text-decoration: line-through;
 }
 
-.item-container {
-    display: flex;
-    padding: 10px 15px;
-}
-
 .icon {
-    padding-right: 5px;
-    font-size: 14px;
+    color: gray;
 }
 
 .icon.clickable {
     cursor: pointer;
 }
 
-.item-container .icon {
-    color: darkgray;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-#greeting {
+.greeting {
     padding-top: 5px;
-    font-size: 14px;
-    font-weight: bold;
     text-align: center;
-    color: slategray;
-}
-
-.empty-list {
-    font-size: 12px;
-    text-align: center;
-    color: slategray;
-    padding: 0;
+    color: gray;
 }
 
 .today {
@@ -83,73 +57,6 @@ input.is-completed {
     color: darkolivegreen;
 }
 
-/* Separator */
-
-.separator {
-    display: flex;
-    align-items: center;
-    text-align: center;
-    color: darkgray;
-}
-
-.separator::before,
-.separator::after {
-    content: '';
-    flex: 1;
-    border-bottom: 1px solid darkgray;
-}
-
-.separator:not(:empty)::before {
-    margin-right: .25em;
-}
-
-.separator:not(:empty)::after {
-    margin-left: .25em;
-}
-
-/* Accordion expand/collapse */
-
-.container {
-    width: 100%;
-    max-width: 600px;
-}
-
-button.accordion {
-    width: 100%;
-    background-color: whitesmoke;
-    border: none;
-    outline: none;
-    text-align: left;
-    padding: 10px 15px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.2s linear;
-}
-
-button.accordion:after {
-    content: '\f078';
-    font-family: "fontawesome";
-    font-size: 14px;
-    float: right;
-}
-
-button.accordion.is-open:after {
-    content: '\f077';
-}
-
-button.accordion:hover, button.accordion.is-open {
-    background-color: #ddd;
-}
-
-.accordion-content {
-    background-color: #F8F9F9;
-    border: 0.5px solid #ddd;
-    padding: 0;
-    font-size: 14px;
-    overflow: hidden;
-    transition: max-height 0.2s ease-in-out;
-}
-
-.accordion-content.is-closed {
-    max-height: 0;
+.divider {
+    padding: 10px 0px;
 }

@@ -45,3 +45,5 @@ export type Pomodoro = {
     estimate: number;
     spent: number;
 };
+
+export type TaskListType = "today" | "tomorrow" | "upcoming" | "unscheduled" | "completed" | "project" | "tag";

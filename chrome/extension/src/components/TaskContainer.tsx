@@ -1,9 +1,10 @@
 import React from 'react';
 import { addItem, deleteItem, updateItem } from '../dao/itemDao';
 import { Task } from '../types/all';
-import { icon } from '../utils/icons';
+import { addIcon, completedTaskIcon, dateIcon, deleteIcon, projectIcon, tagIcon, taskIcon } from '../utils/icons';
 import ItemInput from './ItemInput';
 import ItemView from './ItemView';
+import { Stack } from '@mui/material';
 
 interface Props {
     task?: Task;
@@ -19,11 +20,17 @@ function TaskContainer({ task, onChange }: Props) {
     };
 
     return (
-        <div className="item-container">
-            {!task ? icon("add") :
+        <Stack
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            spacing={0.5}
+            mb={2}
+        >
+            {!task ? addIcon() :
                 (task.completed
-                    ? icon("completedTask", toggleCompletion)
-                    : icon("task", toggleCompletion))
+                    ? completedTaskIcon(toggleCompletion)
+                    : taskIcon(toggleCompletion))
             }
             {!task ?
                 <ItemInput
@@ -44,11 +51,17 @@ function TaskContainer({ task, onChange }: Props) {
                     completed={task.completed}
                 />
             }
-            {!(task && task.completed) && icon("date")}
-            {!(task && task.completed) && icon("project")}
-            {!(task && task.completed) && icon("tags")}
-            {task && icon("delete", () => deleteItem("tasks", task, onChange))}
-        </div>
+            <Stack
+                direction="row"
+                justifyContent="center"
+                alignItems="center"
+            >
+                {!(task && task.completed) && dateIcon()}
+                {!(task && task.completed) && projectIcon()}
+                {!(task && task.completed) && tagIcon()}
+                {task && deleteIcon(() => deleteItem("tasks", task, onChange))}
+            </Stack>
+        </Stack>
     );
 }
 

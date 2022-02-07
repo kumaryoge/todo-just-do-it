@@ -1,9 +1,10 @@
 import React from 'react';
 import { addItem, deleteItem, updateItem } from '../dao/itemDao';
 import { Project } from '../types/all';
-import { icon } from '../utils/icons';
+import { addIcon, deleteIcon, projectIcon } from '../utils/icons';
 import ItemInput from './ItemInput';
 import ItemView from './ItemView';
+import { Stack } from '@mui/material';
 
 interface Props {
     project?: Project;
@@ -12,8 +13,14 @@ interface Props {
 
 function ProjectContainer({ project, onChange }: Props) {
     return (
-        <div className="item-container">
-            {!project ? icon("add") : icon("project")}
+        <Stack
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            spacing={0.5}
+            mb={2}
+        >
+            {!project ? addIcon() : projectIcon()}
             {!project ?
                 <ItemInput
                     type="project"
@@ -32,8 +39,8 @@ function ProjectContainer({ project, onChange }: Props) {
                     }}
                 />
             }
-            {project && icon("delete", () => deleteItem("projects", project, onChange))}
-        </div>
+            {project && deleteIcon(() => deleteItem("projects", project, onChange))}
+        </Stack>
     );
 }
 

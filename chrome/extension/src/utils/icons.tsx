@@ -1,21 +1,66 @@
-const Icons = {
-    smartList: "fa fa-circle",
-    project: "fa fa-tasks",
-    tag: "fa fa-tag",
-    date: "fa fa-calendar",
-    tags: "fa fa-tags",
-    task: "fa fa-circle-o",
-    completedTask: "fa fa-check-circle",
-    add: "fa fa-plus",
-    delete: "fa fa-trash",
-    update: "fa fa-edit",
-    yes: "fa fa-check",
-    no: "fa fa-times",
-};
+import {
+    CircleOutlined,
+    ViewListRounded,
+    CheckCircleOutlineRounded,
+    EventOutlined,
+    AddOutlined,
+    DeleteOutlined,
+    TaskAltRounded,
+    WbTwilightRounded,
+    WbSunnyRounded,
+    TagRounded,
+    EventAvailableRounded,
+    DateRangeRounded
+} from "@mui/icons-material";
+import { TaskListType } from "../types/all";
 
-export function icon(type: keyof typeof Icons, onClick?: () => void) {
-    if (onClick) {
-        return <span className={"icon clickable " + Icons[type]} onClick={onClick}></span>;
+export function taskListIcon(type: TaskListType) {
+    switch (type) {
+        case "today":
+            return <WbSunnyRounded fontSize="small" />;
+        case "tomorrow":
+            return <WbTwilightRounded fontSize="small" />;
+        case "upcoming":
+            return <EventAvailableRounded fontSize="small" />;
+        case "unscheduled":
+            return <DateRangeRounded fontSize="small" />;
+        case "completed":
+            return <TaskAltRounded fontSize="small" />;
+        case "project":
+            return <ViewListRounded fontSize="small" />;
+        case "tag":
+            return <TagRounded fontSize="small" />;
     }
-    return <span className={"icon " + Icons[type]}></span>;
+}
+
+export function projectIcon(onClick?: () => void) {
+    return <ViewListRounded className={iconClasses(onClick)} fontSize="small" onClick={onClick} />;
+}
+
+export function tagIcon(onClick?: () => void) {
+    return <TagRounded className={iconClasses(onClick)} fontSize="small" onClick={onClick} />;
+}
+
+export function taskIcon(onClick?: () => void) {
+    return <CircleOutlined className={iconClasses(onClick)} fontSize="small" onClick={onClick} />;
+}
+
+export function completedTaskIcon(onClick?: () => void) {
+    return <CheckCircleOutlineRounded className={iconClasses(onClick)} fontSize="small" onClick={onClick} />;
+}
+
+export function dateIcon(onClick?: () => void) {
+    return <EventOutlined className={iconClasses(onClick)} fontSize="small" onClick={onClick} />;
+}
+
+export function addIcon(onClick?: () => void) {
+    return <AddOutlined className={iconClasses(onClick)} fontSize="small" onClick={onClick} />;
+}
+
+export function deleteIcon(onClick?: () => void) {
+    return <DeleteOutlined className={iconClasses(onClick)} fontSize="small" onClick={onClick} />;
+}
+
+function iconClasses(onClick?: () => void) {
+    return "icon" + (onClick ? " clickable" : "");
 }

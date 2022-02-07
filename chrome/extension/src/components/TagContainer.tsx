@@ -1,9 +1,10 @@
 import React from 'react';
 import { addItem, deleteItem, updateItem } from '../dao/itemDao';
 import { Tag } from '../types/all';
-import { icon } from '../utils/icons';
+import { addIcon, deleteIcon, tagIcon } from '../utils/icons';
 import ItemInput from './ItemInput';
 import ItemView from './ItemView';
+import { Stack } from '@mui/material';
 
 interface Props {
     tag?: Tag;
@@ -12,8 +13,14 @@ interface Props {
 
 function TagContainer({ tag, onChange }: Props) {
     return (
-        <div className="item-container">
-            {!tag ? icon("add") : icon("tag")}
+        <Stack
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            spacing={0.5}
+            mb={2}
+        >
+            {!tag ? addIcon() : tagIcon()}
             {!tag ?
                 <ItemInput
                     type="tag"
@@ -32,8 +39,8 @@ function TagContainer({ tag, onChange }: Props) {
                     }}
                 />
             }
-            {tag && icon("delete", () => deleteItem("tags", tag, onChange))}
-        </div>
+            {tag && deleteIcon(() => deleteItem("tags", tag, onChange))}
+        </Stack>
     );
 }
 

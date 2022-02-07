@@ -1,4 +1,5 @@
 import React from 'react';
+import { Input } from '@mui/material';
 
 interface Props {
     type: "task" | "project" | "tag";
@@ -9,14 +10,15 @@ function ItemInput({ type, onAddItem }: Props) {
     const [value, setValue] = React.useState("");
 
     return (
-        <input
+        <Input
+            className="input"
             type="text"
             placeholder={"Add " + type + ", press enter to save"}
             value={value}
             onChange={event => {
                 setValue(event.target.value);
             }}
-            onKeyUp={event => {
+            onKeyDown={event => {
                 if (event.key === "Enter") {
                     event.preventDefault();
                     const value = event.currentTarget.value;
@@ -27,6 +29,8 @@ function ItemInput({ type, onAddItem }: Props) {
                 }
             }}
             onBlur={() => setValue("")}
+            disableUnderline={true}
+            multiline={true}
         />
     );
 }

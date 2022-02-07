@@ -1,4 +1,5 @@
 import React from 'react';
+import { Input } from '@mui/material';
 
 interface Props {
     type: "task" | "project" | "tag";
@@ -12,15 +13,15 @@ function ItemView({ type, name, onUpdateItem, completed }: Props) {
     const [isFocus, setFocus] = React.useState(false);
 
     return (
-        <input
-            className={completed ? "is-completed" : ""}
+        <Input
+            className={"input" + (completed ? " is-completed" : "")}
             type="text"
             placeholder={"Edit " + type + ", press enter to save"}
             value={value}
             onChange={event => {
                 setValue(event.target.value);
             }}
-            onKeyUp={event => {
+            onKeyDown={event => {
                 if (event.key === "Enter") {
                     event.preventDefault();
                     const value = event.currentTarget.value;
@@ -39,6 +40,8 @@ function ItemView({ type, name, onUpdateItem, completed }: Props) {
                 setValue(name);
             }}
             readOnly={!isFocus || completed}
+            disableUnderline={true}
+            multiline={true}
         />
     );
 }
