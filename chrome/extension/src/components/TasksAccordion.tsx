@@ -30,14 +30,16 @@ function TasksAccordion({ type, name, tasks, onChange }: Props) {
                 </Stack>
             </AccordionSummary>
             <AccordionDetails>
-                {tasks.map(task => (
-                    <TaskContainer
-                        key={task.id}
-                        task={task}
-                        onChange={onChange}
-                    />
-                ))}
-                <TaskContainer onChange={onChange} />
+                <Stack spacing={2}>
+                    {tasks.map(task => (
+                        <TaskContainer
+                            key={task.id}
+                            task={task}
+                            onChange={onChange}
+                        />
+                    ))}
+                    <TaskContainer onChange={onChange} />
+                </Stack>
             </AccordionDetails>
         </Accordion>
     );

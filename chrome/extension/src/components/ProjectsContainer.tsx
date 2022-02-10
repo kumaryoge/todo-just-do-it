@@ -28,14 +28,16 @@ function ProjectsContainer({ items, onChange }: Props) {
                 </Stack>
             </AccordionSummary>
             <AccordionDetails>
-                {items.projects.map(project => (
-                    <ProjectContainer
-                        key={project.id}
-                        project={project}
-                        onChange={onChange}
-                    />
-                ))}
-                <ProjectContainer onChange={onChange} />
+                <Stack spacing={2}>
+                    {items.projects.map(project => (
+                        <ProjectContainer
+                            key={project.id}
+                            project={project}
+                            onChange={onChange}
+                        />
+                    ))}
+                    <ProjectContainer onChange={onChange} />
+                </Stack>
             </AccordionDetails>
         </Accordion>
     );

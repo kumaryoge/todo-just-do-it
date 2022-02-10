@@ -28,14 +28,16 @@ function TagsContainer({ items, onChange }: Props) {
                 </Stack>
             </AccordionSummary>
             <AccordionDetails>
-                {items.tags.map(tag => (
-                    <TagContainer
-                        key={tag.id}
-                        tag={tag}
-                        onChange={onChange}
-                    />
-                ))}
-                <TagContainer onChange={onChange} />
+                <Stack spacing={2}>
+                    {items.tags.map(tag => (
+                        <TagContainer
+                            key={tag.id}
+                            tag={tag}
+                            onChange={onChange}
+                        />
+                    ))}
+                    <TagContainer onChange={onChange} />
+                </Stack>
             </AccordionDetails>
         </Accordion>
     );

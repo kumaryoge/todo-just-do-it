@@ -18,7 +18,6 @@ function TagContainer({ tag, onChange }: Props) {
             justifyContent="center"
             alignItems="center"
             spacing={0.5}
-            mb={2}
         >
             {!tag ? addIcon() : tagIcon()}
             {!tag ?

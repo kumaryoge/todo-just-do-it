@@ -25,7 +25,6 @@ function TaskContainer({ task, onChange }: Props) {
             justifyContent="center"
             alignItems="center"
             spacing={0.5}
-            mb={2}
         >
             {!task ? addIcon() :
                 (task.completed

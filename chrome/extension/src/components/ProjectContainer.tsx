@@ -18,7 +18,6 @@ function ProjectContainer({ project, onChange }: Props) {
             justifyContent="center"
             alignItems="center"
             spacing={0.5}
-            mb={2}
         >
             {!project ? addIcon() : projectIcon()}
             {!project ?
