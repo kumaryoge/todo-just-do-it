@@ -15,6 +15,9 @@ interface Props {
 }
 
 function TasksContainer({ items, onChange }: Props) {
+    const tasksForProject = (projectId: number) => items.tasks.filter(task => task.projectId === projectId);
+    const tasksForTag = (tagId: number) => items.tasks.filter(task => task.tagIds?.includes(tagId));
+
     return (
         <div>
             <TasksAccordion
@@ -47,23 +50,23 @@ function TasksContainer({ items, onChange }: Props) {
                 tasks={filterCompletedTasks(items.tasks)}
                 onChange={onChange}
             />
-            {items.projects.map(project => (
+            {items.projects.filter(project => tasksForProject(project.id).length).map(project => (
                 <TasksAccordion
                     key={project.id}
                     type="project"
                     typeId={project.id}
                     name={project.name}
-                    tasks={items.tasks.filter(task => task.projectId === project.id)}
+                    tasks={tasksForProject(project.id)}
                     onChange={onChange}
                 />
             ))}
-            {items.tags.map(tag => (
+            {items.tags.filter(tag => tasksForTag(tag.id).length).map(tag => (
                 <TasksAccordion
                     key={tag.id}
                     type="tag"
                     typeId={tag.id}
                     name={tag.name}
-                    tasks={items.tasks.filter(task => task.tagIds && task.tagIds.includes(tag.id))}
+                    tasks={tasksForTag(tag.id)}
                     onChange={onChange}
                 />
             ))}

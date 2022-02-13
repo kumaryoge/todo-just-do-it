@@ -5,6 +5,7 @@ import TaskContainer from './TaskContainer';
 import { ExpandMore } from '@mui/icons-material';
 import { Accordion, AccordionDetails, AccordionSummary, Stack, Typography } from '@mui/material';
 import { getNewTaskDueDate } from '../utils/common';
+import { getCurrentProjects, getCurrentTags } from '../dao/itemDao';
 
 interface Props {
     type: TaskListType;
@@ -15,6 +16,13 @@ interface Props {
 }
 
 function TasksAccordion({ type, typeId, name, tasks, onChange }: Props) {
+    const projectIdString = (projectId?: number) => {
+        return getCurrentProjects().filter(project => project.id === projectId).join();
+    };
+    const tagIdsString = (tagIds?: number[]) => {
+        return getCurrentTags().filter(tag => tagIds?.includes(tag.id)).join();
+    };
+
     return (
         <Accordion>
             <AccordionSummary
@@ -35,7 +43,7 @@ function TasksAccordion({ type, typeId, name, tasks, onChange }: Props) {
                 <Stack spacing={2}>
                     {tasks.map(task => (
                         <TaskContainer
-                            key={task.id + "." + task.version}
+                            key={task.id + "." + task.version + "." + projectIdString(task.projectId) + "." + tagIdsString(task.tagIds)}
                             task={task}
                             onChange={onChange}
                         />

@@ -1,10 +1,18 @@
 import { Item, Items, Project, Tag, Task } from "../types/all";
 
-export const currentItems: Items = {
+const currentItems: Items = {
     tasks: [],
     projects: [],
     tags: []
 };
+
+export function getCurrentProjects() {
+    return currentItems.projects;
+}
+
+export function getCurrentTags() {
+    return currentItems.tags;
+}
 
 export function getAllItems(callback: (items: Items) => void) {
     if (currentItems.tasks.length || currentItems.projects.length || currentItems.tags.length) {

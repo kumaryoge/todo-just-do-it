@@ -1,8 +1,9 @@
 import React from 'react';
-import { Button, Checkbox, Chip, FormControl, FormControlLabel, FormGroup, FormLabel, Popover, Stack } from '@mui/material';
+import { Button, Checkbox, Chip, FormControl, FormControlLabel, FormGroup, FormLabel, Popover, Stack, Typography } from '@mui/material';
 import { tagIcon } from './icons';
 import { Tag } from '../types/all';
-import { currentItems } from '../dao/itemDao';
+import { getCurrentTags } from '../dao/itemDao';
+import { truncate } from './common';
 
 interface Props {
     tagIds?: number[];
@@ -11,7 +12,7 @@ interface Props {
 
 function getTagsByIds(tagIds: number[]): Tag[] {
     const tags: Tag[] = [];
-    for (const tag of currentItems.tags) {
+    for (const tag of getCurrentTags()) {
         if (tagIds.includes(tag.id)) {
             tags.push(tag);
         }
@@ -26,7 +27,7 @@ function TagsSelector({ tagIds, onClick }: Props) {
     return (
         <div>
             <Chip
-                label={tags.map(tag => tag.name).join() || "..."}
+                label={truncate(tags.map(tag => tag.name).join())}
                 variant="outlined"
                 size="small"
                 icon={tagIcon()}
@@ -40,7 +41,7 @@ function TagsSelector({ tagIds, onClick }: Props) {
                 <FormControl sx={{ p: 2 }}>
                     <FormLabel>Tags</FormLabel>
                     <FormGroup>
-                        {currentItems.tags.map(tag =>
+                        {getCurrentTags().map(tag =>
                             <FormControlLabel label={tag.name} control={
                                 <Checkbox
                                     checked={tags.map(t => t.id).includes(tag.id)}
@@ -56,6 +57,9 @@ function TagsSelector({ tagIds, onClick }: Props) {
                                 />
                             } />
                         )}
+                        {getCurrentTags().length === 0 &&
+                            <Typography fontSize="small" color="gray" pt={2}>No tags available!</Typography>
+                        }
                     </FormGroup>
                 </FormControl>
                 <Stack direction="row">
@@ -63,7 +67,7 @@ function TagsSelector({ tagIds, onClick }: Props) {
                         setAnchorEl(null);
                         setTags([]);
                         onClick(undefined);
-                    }}>Clear</Button>
+                    }} disabled={tags.length === 0}>Clear</Button>
                     <Button fullWidth={true} onClick={() => setAnchorEl(null)}>Cancel</Button>
                 </Stack>
             </Popover>

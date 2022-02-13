@@ -1,8 +1,9 @@
 import React from 'react';
-import { Button, Chip, FormControl, FormControlLabel, FormLabel, Popover, Radio, RadioGroup, Stack } from '@mui/material';
+import { Button, Chip, FormControl, FormControlLabel, FormLabel, Popover, Radio, RadioGroup, Stack, Typography } from '@mui/material';
 import { projectIcon } from './icons';
 import { Project } from '../types/all';
-import { currentItems } from '../dao/itemDao';
+import { getCurrentProjects } from '../dao/itemDao';
+import { truncate } from './common';
 
 interface Props {
     projectId?: number;
@@ -10,7 +11,7 @@ interface Props {
 }
 
 function getProjectById(projectId: number): Project | undefined {
-    for (const project of currentItems.projects) {
+    for (const project of getCurrentProjects()) {
         if (project.id === projectId) {
             return project;
         }
@@ -24,7 +25,7 @@ function ProjectSelector({ projectId, onClick }: Props) {
     return (
         <div>
             <Chip
-                label={project?.name || "..."}
+                label={truncate(project?.name)}
                 variant="outlined"
                 size="small"
                 icon={projectIcon()}
@@ -46,9 +47,12 @@ function ProjectSelector({ projectId, onClick }: Props) {
                             onClick(projectId);
                         }}
                     >
-                        {currentItems.projects.map(project =>
+                        {getCurrentProjects().map(project =>
                             <FormControlLabel value={project.id} label={project.name} control={<Radio />} />
                         )}
+                        {getCurrentProjects().length === 0 &&
+                            <Typography fontSize="small" color="gray" pt={2}>No projects available!</Typography>
+                        }
                     </RadioGroup>
                 </FormControl>
                 <Stack direction="row">
@@ -56,7 +60,7 @@ function ProjectSelector({ projectId, onClick }: Props) {
                         setAnchorEl(null);
                         setProject(undefined);
                         onClick(undefined);
-                    }}>Clear</Button>
+                    }} disabled={project === undefined}>Clear</Button>
                     <Button fullWidth={true} onClick={() => setAnchorEl(null)}>Cancel</Button>
                 </Stack>
             </Popover>
