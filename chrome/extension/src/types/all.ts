@@ -7,6 +7,7 @@ export type Items = {
 export type Item = {
     id: number;
     name: string;
+    version: number;
 };
 
 export type Task = Item & {
@@ -26,14 +27,10 @@ export type Tag = Item & {
 };
 
 export type DueDate = {
-    date: Date;
-    recurring?: RecurringPattern;
-};
-
-export type Date = {
     day: number;
     month: number;
     year: number;
+    recurring?: RecurringPattern;
 };
 
 export type RecurringPattern = {

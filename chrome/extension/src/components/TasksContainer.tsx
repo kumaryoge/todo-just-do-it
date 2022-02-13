@@ -51,6 +51,7 @@ function TasksContainer({ items, onChange }: Props) {
                 <TasksAccordion
                     key={project.id}
                     type="project"
+                    typeId={project.id}
                     name={project.name}
                     tasks={items.tasks.filter(task => task.projectId === project.id)}
                     onChange={onChange}
@@ -60,6 +61,7 @@ function TasksContainer({ items, onChange }: Props) {
                 <TasksAccordion
                     key={tag.id}
                     type="tag"
+                    typeId={tag.id}
                     name={tag.name}
                     tasks={items.tasks.filter(task => task.tagIds && task.tagIds.includes(tag.id))}
                     onChange={onChange}

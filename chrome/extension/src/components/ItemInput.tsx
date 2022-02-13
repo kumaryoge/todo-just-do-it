@@ -11,7 +11,6 @@ function ItemInput({ type, onAddItem }: Props) {
 
     return (
         <Input
-            className="input"
             type="text"
             placeholder={"Add " + type + ", press enter to save"}
             value={value}
@@ -31,6 +30,7 @@ function ItemInput({ type, onAddItem }: Props) {
             onBlur={() => setValue("")}
             disableUnderline={true}
             multiline={true}
+            fullWidth={true}
         />
     );
 }

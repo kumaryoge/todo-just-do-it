@@ -1,20 +1,54 @@
 import React from 'react';
 import { addItem, deleteItem, updateItem } from '../dao/itemDao';
-import { Task } from '../types/all';
-import { addIcon, completedTaskIcon, dateIcon, deleteIcon, projectIcon, tagIcon, taskIcon } from '../utils/icons';
+import { DueDate, Task } from '../types/all';
+import { addIcon, completedTaskIcon, deleteIcon, taskIcon } from '../utils/icons';
 import ItemInput from './ItemInput';
 import ItemView from './ItemView';
 import { Stack } from '@mui/material';
+import DateSelector from '../utils/DateSelector';
+import ProjectSelector from '../utils/ProjectSelector';
+import TagsSelector from '../utils/TagsSelector';
 
 interface Props {
     task?: Task;
+    newTaskDueDate?: DueDate;
+    newTaskProjectId?: number;
+    newTaskTagId?: number;
     onChange(): void;
 }
 
-function TaskContainer({ task, onChange }: Props) {
+function TaskContainer({ task, newTaskDueDate, newTaskProjectId, newTaskTagId, onChange }: Props) {
+    const [dueDate, setDueDate] = React.useState<DueDate | undefined>(task ? task.dueDate : newTaskDueDate);
+    const [projectId, setProjectId] = React.useState<number | undefined>(task ? task.projectId : newTaskProjectId);
+    const [tagIds, setTagIds] = React.useState<number[] | undefined>(task ? task.tagIds : (newTaskTagId ? [newTaskTagId] : undefined));
+
     const toggleCompletion = () => {
         if (task) {
             task.completed = !task.completed;
+            updateItem("tasks", task, onChange);
+        }
+    };
+
+    const updateDueDate = (dueDate?: DueDate) => {
+        setDueDate(dueDate);
+        if (task) {
+            task.dueDate = dueDate;
+            updateItem("tasks", task, onChange);
+        }
+    };
+
+    const updateProjectId = (projectId?: number) => {
+        setProjectId(projectId);
+        if (task) {
+            task.projectId = projectId;
+            updateItem("tasks", task, onChange);
+        }
+    };
+
+    const updateTagIds = (tagIds?: number[]) => {
+        setTagIds(tagIds);
+        if (task) {
+            task.tagIds = tagIds;
             updateItem("tasks", task, onChange);
         }
     };
@@ -24,42 +58,47 @@ function TaskContainer({ task, onChange }: Props) {
             direction="row"
             justifyContent="center"
             alignItems="center"
-            spacing={0.5}
+            spacing={1}
         >
             {!task ? addIcon() :
                 (task.completed
                     ? completedTaskIcon(toggleCompletion)
                     : taskIcon(toggleCompletion))
             }
-            {!task ?
-                <ItemInput
-                    type="task"
-                    onAddItem={value => {
-                        const task: Task = { id: 0, name: value };
-                        addItem("tasks", task, onChange);
-                    }}
-                />
-                :
-                <ItemView
-                    type="task"
-                    name={task.name}
-                    onUpdateItem={value => {
-                        task.name = value;
-                        updateItem("tasks", task, onChange);
-                    }}
-                    completed={task.completed}
-                />
-            }
-            <Stack
-                direction="row"
-                justifyContent="center"
-                alignItems="center"
-            >
-                {!(task && task.completed) && dateIcon()}
-                {!(task && task.completed) && projectIcon()}
-                {!(task && task.completed) && tagIcon()}
-                {task && deleteIcon(() => deleteItem("tasks", task, onChange))}
+            <Stack width={"100%"}>
+                {!task ?
+                    <ItemInput
+                        type="task"
+                        onAddItem={value => {
+                            const task: Task = { id: 0, name: value, version: 0 };
+                            task.dueDate = dueDate;
+                            task.projectId = projectId;
+                            task.tagIds = tagIds;
+                            addItem("tasks", task, onChange);
+                        }}
+                    />
+                    :
+                    <ItemView
+                        type="task"
+                        name={task.name}
+                        onUpdateItem={value => {
+                            task.name = value;
+                            updateItem("tasks", task, onChange);
+                        }}
+                        completed={task.completed}
+                    />
+                }
+                <Stack
+                    direction="row"
+                    alignItems="center"
+                    spacing={0.5}
+                >
+                    {task && !task.completed && <DateSelector dueDate={dueDate} onClick={date => updateDueDate(date)} />}
+                    {task && !task.completed && <ProjectSelector projectId={projectId} onClick={id => updateProjectId(id)} />}
+                    {task && !task.completed && <TagsSelector tagIds={tagIds} onClick={ids => updateTagIds(ids)} />}
+                </Stack>
             </Stack>
+            {task && deleteIcon(() => deleteItem("tasks", task, onChange))}
         </Stack>
     );
 }

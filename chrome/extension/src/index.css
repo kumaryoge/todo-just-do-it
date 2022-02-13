@@ -7,11 +7,7 @@ body {
     width: 350px;
 }
 
-.input {
-    width: 100%;
-}
-
-.input.is-completed {
+.is-completed {
     text-decoration: line-through;
 }
 

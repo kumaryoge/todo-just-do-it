@@ -1,6 +1,6 @@
 import React from 'react';
 import { DeleteOutlined } from '@mui/icons-material';
-import { Button, Popover, Typography } from '@mui/material';
+import { Button, Popover, Stack, Typography } from '@mui/material';
 
 interface Props {
     classes: string;
@@ -23,8 +23,10 @@ function DeleteIcon({ classes, onClick }: Props) {
                 onClose={() => setAnchorEl(null)}
             >
                 <Typography p={2}>Are you sure?</Typography>
-                <Button onClick={onClick}>Yes</Button>
-                <Button onClick={() => setAnchorEl(null)}>No</Button>
+                <Stack direction="row">
+                    <Button fullWidth={true} onClick={onClick}>Yes</Button>
+                    <Button fullWidth={true} onClick={() => setAnchorEl(null)}>No</Button>
+                </Stack>
             </Popover>
         </div>
     );

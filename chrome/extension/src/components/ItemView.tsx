@@ -14,7 +14,7 @@ function ItemView({ type, name, onUpdateItem, completed }: Props) {
 
     return (
         <Input
-            className={"input" + (completed ? " is-completed" : "")}
+            className={completed ? "is-completed" : ""}
             type="text"
             placeholder={"Edit " + type + ", press enter to save"}
             value={value}
@@ -42,6 +42,7 @@ function ItemView({ type, name, onUpdateItem, completed }: Props) {
             readOnly={!isFocus || completed}
             disableUnderline={true}
             multiline={true}
+            fullWidth={true}
         />
     );
 }

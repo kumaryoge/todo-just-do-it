@@ -4,15 +4,17 @@ import { taskListIcon } from '../utils/icons';
 import TaskContainer from './TaskContainer';
 import { ExpandMore } from '@mui/icons-material';
 import { Accordion, AccordionDetails, AccordionSummary, Stack, Typography } from '@mui/material';
+import { getNewTaskDueDate } from '../utils/common';
 
 interface Props {
     type: TaskListType;
+    typeId?: number;
     name: string;
     tasks: Task[];
     onChange(): void;
 }
 
-function TasksAccordion({ type, name, tasks, onChange }: Props) {
+function TasksAccordion({ type, typeId, name, tasks, onChange }: Props) {
     return (
         <Accordion>
             <AccordionSummary
@@ -33,12 +35,19 @@ function TasksAccordion({ type, name, tasks, onChange }: Props) {
                 <Stack spacing={2}>
                     {tasks.map(task => (
                         <TaskContainer
-                            key={task.id}
+                            key={task.id + "." + task.version}
                             task={task}
                             onChange={onChange}
                         />
                     ))}
-                    <TaskContainer onChange={onChange} />
+                    {type !== "completed" &&
+                        <TaskContainer
+                            newTaskDueDate={getNewTaskDueDate(type)}
+                            newTaskProjectId={type === "project" ? typeId : undefined}
+                            newTaskTagId={type === "tag" ? typeId : undefined}
+                            onChange={onChange}
+                        />
+                    }
                 </Stack>
             </AccordionDetails>
         </Accordion>

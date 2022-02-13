@@ -17,14 +17,14 @@ function ProjectContainer({ project, onChange }: Props) {
             direction="row"
             justifyContent="center"
             alignItems="center"
-            spacing={0.5}
+            spacing={1}
         >
             {!project ? addIcon() : projectIcon()}
             {!project ?
                 <ItemInput
                     type="project"
                     onAddItem={value => {
-                        const project: Project = { id: 0, name: value };
+                        const project: Project = { id: 0, name: value, version: 0 };
                         addItem("projects", project, onChange);
                     }}
                 />

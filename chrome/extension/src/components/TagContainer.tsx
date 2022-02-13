@@ -17,14 +17,14 @@ function TagContainer({ tag, onChange }: Props) {
             direction="row"
             justifyContent="center"
             alignItems="center"
-            spacing={0.5}
+            spacing={1}
         >
             {!tag ? addIcon() : tagIcon()}
             {!tag ?
                 <ItemInput
                     type="tag"
                     onAddItem={value => {
-                        const tag: Tag = { id: 0, name: value };
+                        const tag: Tag = { id: 0, name: value, version: 0 };
                         addItem("tags", tag, onChange);
                     }}
                 />
