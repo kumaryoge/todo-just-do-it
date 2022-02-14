@@ -1,5 +1,5 @@
 import React from 'react';
-import { getGreeting } from '../utils/common';
+import { filterTodaysTasks, getGreeting } from '../utils/common';
 import TasksContainer from './TasksContainer';
 import ProjectsContainer from './ProjectsContainer';
 import TagsContainer from './TagsContainer';
@@ -14,7 +14,14 @@ function App() {
         tags: []
     });
 
-    const updateAllItems = () => getAllItems(items => setItems(items));
+    const updateAllItems = () => getAllItems(items => {
+        setItems(items);
+        const numTasksToday = filterTodaysTasks(items.tasks).length;
+        const strTasksToday = numTasksToday + ` ${numTasksToday > 1 ? "tasks" : "task"} today`;
+        chrome.action.setTitle({ title: `Todo: ${numTasksToday ? strTasksToday : "Just do it"}!` });
+        chrome.action.setBadgeText({ text: `${numTasksToday ? numTasksToday : ""}` });
+        chrome.action.setBadgeBackgroundColor({ color: "#f00e0e" });
+    });
     React.useEffect(updateAllItems, []);
 
     return (
