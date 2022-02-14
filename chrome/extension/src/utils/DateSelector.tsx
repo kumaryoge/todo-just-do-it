@@ -48,7 +48,7 @@ function DateSelector({ dueDate, onClick }: Props) {
                         setAnchorEl(null);
                         setDate(null);
                         onClick(undefined);
-                    }}>Clear</Button>
+                    }} disabled={date === null}>Clear</Button>
                     <Button fullWidth={true} onClick={() => setAnchorEl(null)}>Cancel</Button>
                 </Stack>
             </Popover>
