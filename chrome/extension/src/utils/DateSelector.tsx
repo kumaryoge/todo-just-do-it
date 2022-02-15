@@ -3,7 +3,6 @@ import { Button, Chip, Popover, Stack, TextField } from '@mui/material';
 import { dateIcon } from './icons';
 import { LocalizationProvider, StaticDatePicker } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import { format } from 'date-fns';
 import { DueDate } from '../types/all';
 import { isPastDate, toDueDate, toNormalDate } from './common';
 
@@ -15,11 +14,12 @@ interface Props {
 function DateSelector({ dueDate, onClick }: Props) {
     const [anchorEl, setAnchorEl] = React.useState<any>(null);
     const [date, setDate] = React.useState<Date | null>(dueDate ? toNormalDate(dueDate) : null);
+    const dateFormat: Intl.DateTimeFormatOptions = { weekday: "short", month: "short", day: "numeric" };
 
     return (
         <div>
             <Chip
-                label={(date && format(date, "EEE MMM dd")) || "..."}
+                label={(date && date.toLocaleDateString(navigator.language, dateFormat)) || "..."}
                 color={date && isPastDate(date) ? "error" : "default"}
                 variant="outlined"
                 size="small"
