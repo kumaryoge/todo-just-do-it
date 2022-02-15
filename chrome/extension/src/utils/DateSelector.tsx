@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Chip, Popover, Stack, TextField } from '@mui/material';
+import { Button, Chip, Popover, Stack, TextField, Typography } from '@mui/material';
 import { dateIcon } from './icons';
 import { LocalizationProvider, StaticDatePicker } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
@@ -19,7 +19,7 @@ function DateSelector({ dueDate, onClick }: Props) {
     return (
         <div>
             <Chip
-                label={(date && date.toLocaleDateString(navigator.language, dateFormat)) || "..."}
+                label={<Typography fontSize="small">{(date && date.toLocaleDateString(navigator.language, dateFormat)) || "+"}</Typography>}
                 color={date && isPastDate(date) ? "error" : "default"}
                 variant="outlined"
                 size="small"

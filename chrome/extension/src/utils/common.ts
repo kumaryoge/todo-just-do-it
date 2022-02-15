@@ -103,10 +103,10 @@ export function getNewTaskDueDate(type: TaskListType): DueDate | undefined {
     }
 }
 
-export function truncate(str?: string): string {
+export function truncate(str: string): string {
     if (!str) {
-        return "...";
+        return str;
     }
-    const maxLen = 3;
+    const maxLen = 2;
     return str.length <= maxLen ? str : str.substring(0, maxLen) + "..";
 }

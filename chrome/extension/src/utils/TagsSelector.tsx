@@ -27,7 +27,7 @@ function TagsSelector({ tagIds, onClick }: Props) {
     return (
         <div>
             <Chip
-                label={truncate(tags.map(tag => tag.name).join())}
+                label={<Typography fontSize="small">{truncate(tags.map(tag => tag.name).join()) || "+"}</Typography>}
                 variant="outlined"
                 size="small"
                 icon={tagIcon()}

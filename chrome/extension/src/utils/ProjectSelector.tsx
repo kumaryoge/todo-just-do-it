@@ -25,7 +25,7 @@ function ProjectSelector({ projectId, onClick }: Props) {
     return (
         <div>
             <Chip
-                label={truncate(project?.name)}
+                label={<Typography fontSize="small">{(project && truncate(project.name)) || "+"}</Typography>}
                 variant="outlined"
                 size="small"
                 icon={projectIcon()}
