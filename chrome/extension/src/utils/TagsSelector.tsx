@@ -3,7 +3,7 @@ import { Button, Checkbox, Chip, FormControl, FormControlLabel, FormGroup, FormL
 import { tagIcon } from './icons';
 import { Tag } from '../types/all';
 import { getCurrentTags } from '../dao/itemDao';
-import { truncate } from './common';
+import { TOOLTIP_ENTER_DELAY, TOOLTIP_LEAVE_DELAY, truncate } from './common';
 
 interface Props {
     tagIds?: number[];
@@ -28,8 +28,8 @@ function TagsSelector({ tagIds, onClick }: Props) {
         <div>
             <Tooltip
                 title={<Typography>{tags.map(tag => tag.name).join() || "Add one or more tags to this task"}</Typography>}
-                enterDelay={500}
-                leaveDelay={200}
+                enterDelay={TOOLTIP_ENTER_DELAY}
+                leaveDelay={TOOLTIP_LEAVE_DELAY}
             >
                 <Chip
                     label={<Typography fontSize="small">{truncate(tags.map(tag => tag.name).join()) || "+"}</Typography>}

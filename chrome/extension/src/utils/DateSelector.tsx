@@ -4,7 +4,7 @@ import { dateIcon } from './icons';
 import { LocalizationProvider, StaticDatePicker } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { DueDate } from '../types/all';
-import { isPastDate, toDueDate, toNormalDate } from './common';
+import { isPastDate, toDueDate, toNormalDate, TOOLTIP_ENTER_DELAY, TOOLTIP_LEAVE_DELAY } from './common';
 
 interface Props {
     dueDate?: DueDate;
@@ -21,8 +21,8 @@ function DateSelector({ dueDate, onClick }: Props) {
         <div>
             <Tooltip
                 title={<Typography>{(date && date.toLocaleDateString(navigator.language, dateFormatLong)) || "Add a due date to this task"}</Typography>}
-                enterDelay={500}
-                leaveDelay={200}
+                enterDelay={TOOLTIP_ENTER_DELAY}
+                leaveDelay={TOOLTIP_LEAVE_DELAY}
             >
                 <Chip
                     label={<Typography fontSize="small">{(date && date.toLocaleDateString(navigator.language, dateFormat)) || "+"}</Typography>}

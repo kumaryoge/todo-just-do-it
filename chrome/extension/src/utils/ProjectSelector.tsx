@@ -3,7 +3,7 @@ import { Button, Chip, FormControl, FormControlLabel, FormLabel, Popover, Radio,
 import { projectIcon } from './icons';
 import { Project } from '../types/all';
 import { getCurrentProjects } from '../dao/itemDao';
-import { truncate } from './common';
+import { TOOLTIP_ENTER_DELAY, TOOLTIP_LEAVE_DELAY, truncate } from './common';
 
 interface Props {
     projectId?: number;
@@ -26,8 +26,8 @@ function ProjectSelector({ projectId, onClick }: Props) {
         <div>
             <Tooltip
                 title={<Typography>{project?.name || "Add this task to a project"}</Typography>}
-                enterDelay={500}
-                leaveDelay={200}
+                enterDelay={TOOLTIP_ENTER_DELAY}
+                leaveDelay={TOOLTIP_LEAVE_DELAY}
             >
                 <Chip
                     label={<Typography fontSize="small">{(project && truncate(project.name)) || "+"}</Typography>}
