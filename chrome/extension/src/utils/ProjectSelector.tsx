@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Chip, FormControl, FormControlLabel, FormLabel, Popover, Radio, RadioGroup, Stack, Typography } from '@mui/material';
+import { Button, Chip, FormControl, FormControlLabel, FormLabel, Popover, Radio, RadioGroup, Stack, Tooltip, Typography } from '@mui/material';
 import { projectIcon } from './icons';
 import { Project } from '../types/all';
 import { getCurrentProjects } from '../dao/itemDao';
@@ -24,13 +24,19 @@ function ProjectSelector({ projectId, onClick }: Props) {
 
     return (
         <div>
-            <Chip
-                label={<Typography fontSize="small">{(project && truncate(project.name)) || "+"}</Typography>}
-                variant="outlined"
-                size="small"
-                icon={projectIcon()}
-                onClick={event => setAnchorEl(event.currentTarget)}
-            />
+            <Tooltip
+                title={<Typography>{project?.name || "Add this task to a project"}</Typography>}
+                enterDelay={500}
+                leaveDelay={200}
+            >
+                <Chip
+                    label={<Typography fontSize="small">{(project && truncate(project.name)) || "+"}</Typography>}
+                    variant="outlined"
+                    size="small"
+                    icon={projectIcon()}
+                    onClick={event => setAnchorEl(event.currentTarget)}
+                />
+            </Tooltip>
             <Popover
                 open={Boolean(anchorEl)}
                 anchorEl={anchorEl}
@@ -51,7 +57,7 @@ function ProjectSelector({ projectId, onClick }: Props) {
                             <FormControlLabel value={project.id} label={project.name} control={<Radio />} />
                         )}
                         {getCurrentProjects().length === 0 &&
-                            <Typography fontSize="small" color="gray" pt={2}>No projects available!</Typography>
+                            <Typography color="gray" pt={2}>No projects available! Please add a project in the Projects list first.</Typography>
                         }
                     </RadioGroup>
                 </FormControl>

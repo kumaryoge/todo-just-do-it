@@ -1,6 +1,6 @@
 import { DueDate, Task, TaskListType } from "../types/all";
 
-export const ITEM_NAME_MAX_LENGTH = 256;
+export const ITEM_NAME_MAX_LENGTH = 512;
 
 export function getGreeting() {
     const hour = new Date().getHours();

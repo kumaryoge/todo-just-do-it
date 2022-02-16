@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Checkbox, Chip, FormControl, FormControlLabel, FormGroup, FormLabel, Popover, Stack, Typography } from '@mui/material';
+import { Button, Checkbox, Chip, FormControl, FormControlLabel, FormGroup, FormLabel, Popover, Stack, Tooltip, Typography } from '@mui/material';
 import { tagIcon } from './icons';
 import { Tag } from '../types/all';
 import { getCurrentTags } from '../dao/itemDao';
@@ -26,13 +26,19 @@ function TagsSelector({ tagIds, onClick }: Props) {
 
     return (
         <div>
-            <Chip
-                label={<Typography fontSize="small">{truncate(tags.map(tag => tag.name).join()) || "+"}</Typography>}
-                variant="outlined"
-                size="small"
-                icon={tagIcon()}
-                onClick={event => setAnchorEl(event.currentTarget)}
-            />
+            <Tooltip
+                title={<Typography>{tags.map(tag => tag.name).join() || "Add one or more tags to this task"}</Typography>}
+                enterDelay={500}
+                leaveDelay={200}
+            >
+                <Chip
+                    label={<Typography fontSize="small">{truncate(tags.map(tag => tag.name).join()) || "+"}</Typography>}
+                    variant="outlined"
+                    size="small"
+                    icon={tagIcon()}
+                    onClick={event => setAnchorEl(event.currentTarget)}
+                />
+            </Tooltip>
             <Popover
                 open={Boolean(anchorEl)}
                 anchorEl={anchorEl}
@@ -58,7 +64,7 @@ function TagsSelector({ tagIds, onClick }: Props) {
                             } />
                         )}
                         {getCurrentTags().length === 0 &&
-                            <Typography fontSize="small" color="gray" pt={2}>No tags available!</Typography>
+                            <Typography color="gray" pt={2}>No tags available! Please add a tag in the Tags list first.</Typography>
                         }
                     </FormGroup>
                 </FormControl>
