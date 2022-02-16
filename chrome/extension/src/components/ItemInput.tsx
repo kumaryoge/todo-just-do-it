@@ -1,5 +1,6 @@
 import React from 'react';
 import { Input } from '@mui/material';
+import { ITEM_NAME_MAX_LENGTH } from '../utils/common';
 
 interface Props {
     type: "task" | "project" | "tag";
@@ -31,6 +32,7 @@ function ItemInput({ type, onAddItem }: Props) {
             disableUnderline={true}
             multiline={true}
             fullWidth={true}
+            inputProps={{ maxLength: ITEM_NAME_MAX_LENGTH }}
         />
     );
 }
