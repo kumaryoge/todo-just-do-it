@@ -6,7 +6,7 @@ export const TOOLTIP_LEAVE_DELAY = 200;
 
 export function getGreeting() {
     const hour = new Date().getHours();
-    return "Good " + (hour < 12 ? "Morning" : (hour < 18 ? "Afternoon" : "Evening")) + "!";
+    return "Good " + (hour < 12 ? "Morning" : (hour < 18 ? "Afternoon" : "Evening"));
 }
 
 export function filterTodaysTasks(tasks: Task[]) {

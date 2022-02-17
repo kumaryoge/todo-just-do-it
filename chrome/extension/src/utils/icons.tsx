@@ -9,7 +9,9 @@ import {
     WbSunnyRounded,
     TagRounded,
     EventAvailableRounded,
-    DateRangeRounded
+    DateRangeRounded,
+    SettingsOutlined,
+    HomeOutlined
 } from "@mui/icons-material";
 import { TaskListType } from "../types/all";
 import DeleteIcon from "./DeleteIcon";
@@ -31,6 +33,10 @@ export function taskListIcon(type: TaskListType) {
         case "tag":
             return <TagRounded fontSize="small" />;
     }
+}
+
+export function homeIcon(onClick?: () => void) {
+    return <HomeOutlined className={iconClasses(onClick)} fontSize="small" onClick={onClick} />;
 }
 
 export function projectIcon(onClick?: () => void) {
@@ -59,6 +65,10 @@ export function addIcon(onClick?: () => void) {
 
 export function deleteIcon(onClick: () => void) {
     return <DeleteIcon classes={iconClasses(onClick)} onClick={onClick} />;
+}
+
+export function settingsIcon(onClick: () => void) {
+    return <SettingsOutlined className={iconClasses(onClick)} fontSize="small" onClick={onClick} />;
 }
 
 function iconClasses(onClick?: () => void) {

@@ -53,7 +53,7 @@ function TagsSelector({ tagIds, onClick }: Props) {
                                     checked={tags.map(t => t.id).includes(tag.id)}
                                     onChange={(event) => {
                                         setAnchorEl(null);
-                                        let newTags = tags.filter(t => t.id != tag.id);
+                                        let newTags = tags.filter(t => t.id !== tag.id);
                                         if (event.target.checked) {
                                             newTags = newTags.concat(tag);
                                         }
