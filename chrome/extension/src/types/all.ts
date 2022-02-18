@@ -2,6 +2,13 @@ export type Items = {
     tasks: Task[];
     projects: Project[];
     tags: Tag[];
+    settings: Settings;
+};
+
+export type Settings = {
+    showBadge: boolean;
+    hideProjects: boolean;
+    hideTags: boolean;
 };
 
 export type Item = {

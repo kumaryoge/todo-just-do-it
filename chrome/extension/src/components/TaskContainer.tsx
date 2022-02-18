@@ -14,10 +14,12 @@ interface Props {
     newTaskDueDate?: DueDate;
     newTaskProjectId?: number;
     newTaskTagId?: number;
+    hideProjects: boolean;
+    hideTags: boolean;
     onChange(): void;
 }
 
-function TaskContainer({ task, newTaskDueDate, newTaskProjectId, newTaskTagId, onChange }: Props) {
+function TaskContainer({ task, newTaskDueDate, newTaskProjectId, newTaskTagId, hideProjects, hideTags, onChange }: Props) {
     const [dueDate, setDueDate] = React.useState<DueDate | undefined>(task ? task.dueDate : newTaskDueDate);
     const [projectId, setProjectId] = React.useState<number | undefined>(task ? task.projectId : newTaskProjectId);
     const [tagIds, setTagIds] = React.useState<number[] | undefined>(task ? task.tagIds : (newTaskTagId ? [newTaskTagId] : undefined));
@@ -94,8 +96,8 @@ function TaskContainer({ task, newTaskDueDate, newTaskProjectId, newTaskTagId, o
                     spacing={0.5}
                 >
                     {task && !task.completed && <DateSelector dueDate={dueDate} onClick={date => updateDueDate(date)} />}
-                    {task && !task.completed && <ProjectSelector projectId={projectId} onClick={id => updateProjectId(id)} />}
-                    {task && !task.completed && <TagsSelector tagIds={tagIds} onClick={ids => updateTagIds(ids)} />}
+                    {task && !task.completed && !hideProjects && <ProjectSelector projectId={projectId} onClick={id => updateProjectId(id)} />}
+                    {task && !task.completed && !hideTags && <TagsSelector tagIds={tagIds} onClick={ids => updateTagIds(ids)} />}
                 </Stack>
             </Stack>
             {task && deleteIcon(() => deleteItem("tasks", task, onChange))}

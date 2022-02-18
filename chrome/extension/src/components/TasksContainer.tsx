@@ -25,51 +25,67 @@ function TasksContainer({ items, onChange }: Props) {
                 name="Today"
                 tasks={filterTodaysTasks(items.tasks)}
                 onChange={onChange}
+                hideProjects={items.settings.hideProjects}
+                hideTags={items.settings.hideTags}
             />
             <TasksAccordion
                 type="tomorrow"
                 name="Tomorrow"
                 tasks={filterTomorrowsTasks(items.tasks)}
                 onChange={onChange}
+                hideProjects={items.settings.hideProjects}
+                hideTags={items.settings.hideTags}
             />
             <TasksAccordion
                 type="upcoming"
                 name="Upcoming"
                 tasks={filterUpcomingTasks(items.tasks)}
                 onChange={onChange}
+                hideProjects={items.settings.hideProjects}
+                hideTags={items.settings.hideTags}
             />
             <TasksAccordion
                 type="unscheduled"
                 name="Unscheduled"
                 tasks={filterUnscheduledTasks(items.tasks)}
                 onChange={onChange}
+                hideProjects={items.settings.hideProjects}
+                hideTags={items.settings.hideTags}
             />
             <TasksAccordion
                 type="completed"
                 name="Completed"
                 tasks={filterCompletedTasks(items.tasks)}
                 onChange={onChange}
+                hideProjects={items.settings.hideProjects}
+                hideTags={items.settings.hideTags}
             />
-            {items.projects.filter(project => tasksForProject(project.id).length).map(project => (
-                <TasksAccordion
-                    key={project.id}
-                    type="project"
-                    typeId={project.id}
-                    name={project.name}
-                    tasks={tasksForProject(project.id)}
-                    onChange={onChange}
-                />
-            ))}
-            {items.tags.filter(tag => tasksForTag(tag.id).length).map(tag => (
-                <TasksAccordion
-                    key={tag.id}
-                    type="tag"
-                    typeId={tag.id}
-                    name={tag.name}
-                    tasks={tasksForTag(tag.id)}
-                    onChange={onChange}
-                />
-            ))}
+            {!items.settings.hideProjects &&
+                items.projects.filter(project => tasksForProject(project.id).length).map(project => (
+                    <TasksAccordion
+                        key={project.id}
+                        type="project"
+                        typeId={project.id}
+                        name={project.name}
+                        tasks={tasksForProject(project.id)}
+                        onChange={onChange}
+                        hideProjects={items.settings.hideProjects}
+                        hideTags={items.settings.hideTags}
+                    />
+                ))}
+            {!items.settings.hideTags &&
+                items.tags.filter(tag => tasksForTag(tag.id).length).map(tag => (
+                    <TasksAccordion
+                        key={tag.id}
+                        type="tag"
+                        typeId={tag.id}
+                        name={tag.name}
+                        tasks={tasksForTag(tag.id)}
+                        onChange={onChange}
+                        hideProjects={items.settings.hideProjects}
+                        hideTags={items.settings.hideTags}
+                    />
+                ))}
         </div>
     );
 }

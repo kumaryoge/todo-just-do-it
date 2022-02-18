@@ -12,10 +12,12 @@ interface Props {
     typeId?: number;
     name: string;
     tasks: Task[];
+    hideProjects: boolean;
+    hideTags: boolean;
     onChange(): void;
 }
 
-function TasksAccordion({ type, typeId, name, tasks, onChange }: Props) {
+function TasksAccordion({ type, typeId, name, tasks, hideProjects, hideTags, onChange }: Props) {
     const projectIdString = (projectId?: number) => {
         return getCurrentProjects().filter(project => project.id === projectId).join();
     };
@@ -46,6 +48,8 @@ function TasksAccordion({ type, typeId, name, tasks, onChange }: Props) {
                             key={task.id + "." + task.version + "." + projectIdString(task.projectId) + "." + tagIdsString(task.tagIds)}
                             task={task}
                             onChange={onChange}
+                            hideProjects={hideProjects}
+                            hideTags={hideTags}
                         />
                     ))}
                     {type !== "completed" &&
@@ -54,6 +58,8 @@ function TasksAccordion({ type, typeId, name, tasks, onChange }: Props) {
                             newTaskProjectId={type === "project" ? typeId : undefined}
                             newTaskTagId={type === "tag" ? typeId : undefined}
                             onChange={onChange}
+                            hideProjects={hideProjects}
+                            hideTags={hideTags}
                         />
                     }
                 </Stack>

@@ -10,11 +10,11 @@ import {
     TagRounded,
     EventAvailableRounded,
     DateRangeRounded,
-    SettingsOutlined,
     HomeOutlined
 } from "@mui/icons-material";
-import { TaskListType } from "../types/all";
+import { Settings, TaskListType } from "../types/all";
 import DeleteIcon from "./DeleteIcon";
+import SettingsIcon from "./SettingsIcon";
 
 export function taskListIcon(type: TaskListType) {
     switch (type) {
@@ -67,8 +67,8 @@ export function deleteIcon(onClick: () => void) {
     return <DeleteIcon classes={iconClasses(onClick)} onClick={onClick} />;
 }
 
-export function settingsIcon(onClick: () => void) {
-    return <SettingsOutlined className={iconClasses(onClick)} fontSize="small" onClick={onClick} />;
+export function settingsIcon(showBadge: boolean, hideProjects: boolean, hideTags: boolean, onClick: () => void) {
+    return <SettingsIcon classes={iconClasses(onClick)} showBadge={showBadge} hideProjects={hideProjects} hideTags={hideTags} onClick={onClick} />;
 }
 
 function iconClasses(onClick?: () => void) {

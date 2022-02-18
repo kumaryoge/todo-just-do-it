@@ -1,9 +1,14 @@
-import { Item, Items, Project, Tag, Task } from "../types/all";
+import { Item, Items, Project, Settings, Tag, Task } from "../types/all";
 
 const currentItems: Items = {
     tasks: [],
     projects: [],
-    tags: []
+    tags: [],
+    settings: {
+        showBadge: false,
+        hideProjects: false,
+        hideTags: false
+    }
 };
 
 export function getCurrentProjects() {
@@ -19,21 +24,33 @@ export function getAllItems(callback: (items: Items) => void) {
         callback({
             tasks: currentItems.tasks.slice(),
             projects: currentItems.projects.slice(),
-            tags: currentItems.tags.slice()
+            tags: currentItems.tags.slice(),
+            settings: {
+                showBadge: currentItems.settings.showBadge,
+                hideProjects: currentItems.settings.hideProjects,
+                hideTags: currentItems.settings.hideTags
+            }
         });
         return;
     }
     chrome.storage.sync.get(
-        ["tasks", "projects", "tags"],
+        ["tasks", "projects", "tags", "settings"],
         function (result) {
-            const tasks: Task[] = (result.tasks && result.tasks.list) || [];
-            const projects: Project[] = (result.projects && result.projects.list) || [];
-            const tags: Tag[] = (result.tags && result.tags.list) || [];
+            const tasks: Task[] = result.tasks?.list || [];
+            const projects: Project[] = result.projects?.list || [];
+            const tags: Tag[] = result.tags?.list || [];
+            const settings: Settings = {
+                showBadge: Boolean(result.settings?.showBadge),
+                hideProjects: Boolean(result.settings?.hideProjects),
+                hideTags: Boolean(result.settings?.hideTags)
+            };
 
             currentItems.tasks = tasks;
             currentItems.projects = projects;
             currentItems.tags = tags;
-            callback({ tasks, projects, tags });
+            currentItems.settings = settings;
+
+            callback({ tasks, projects, tags, settings });
         }
     );
 }
@@ -101,6 +118,21 @@ export function updateItem<T extends Item>(key: "tasks" | "projects" | "tags", i
                     callback();
                 }
             );
+        }
+    );
+}
+
+export function updateSettings(settings: Settings, callback: () => void) {
+    const newSettings: Settings = {
+        showBadge: settings.showBadge,
+        hideProjects: settings.hideProjects,
+        hideTags: settings.hideTags
+    };
+    chrome.storage.sync.set(
+        { settings: newSettings },
+        function () {
+            currentItems.settings = newSettings;
+            callback();
         }
     );
 }
