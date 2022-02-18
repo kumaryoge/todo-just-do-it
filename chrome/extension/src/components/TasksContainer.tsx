@@ -25,6 +25,7 @@ function TasksContainer({ items, onChange }: Props) {
                 name="Today"
                 tasks={filterTodaysTasks(items.tasks)}
                 onChange={onChange}
+                expand={items.settings.expandTodayList}
                 hideProjects={items.settings.hideProjects}
                 hideTags={items.settings.hideTags}
             />

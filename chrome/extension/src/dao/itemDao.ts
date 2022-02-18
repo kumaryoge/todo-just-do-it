@@ -6,6 +6,7 @@ const currentItems: Items = {
     tags: [],
     settings: {
         showBadge: false,
+        expandTodayList: false,
         hideProjects: false,
         hideTags: false
     }
@@ -27,6 +28,7 @@ export function getAllItems(callback: (items: Items) => void) {
             tags: currentItems.tags.slice(),
             settings: {
                 showBadge: currentItems.settings.showBadge,
+                expandTodayList: currentItems.settings.expandTodayList,
                 hideProjects: currentItems.settings.hideProjects,
                 hideTags: currentItems.settings.hideTags
             }
@@ -41,6 +43,7 @@ export function getAllItems(callback: (items: Items) => void) {
             const tags: Tag[] = result.tags?.list || [];
             const settings: Settings = {
                 showBadge: Boolean(result.settings?.showBadge),
+                expandTodayList: Boolean(result.settings?.expandTodayList),
                 hideProjects: Boolean(result.settings?.hideProjects),
                 hideTags: Boolean(result.settings?.hideTags)
             };
@@ -125,6 +128,7 @@ export function updateItem<T extends Item>(key: "tasks" | "projects" | "tags", i
 export function updateSettings(settings: Settings, callback: () => void) {
     const newSettings: Settings = {
         showBadge: settings.showBadge,
+        expandTodayList: settings.expandTodayList,
         hideProjects: settings.hideProjects,
         hideTags: settings.hideTags
     };

@@ -67,8 +67,22 @@ export function deleteIcon(onClick: () => void) {
     return <DeleteIcon classes={iconClasses(onClick)} onClick={onClick} />;
 }
 
-export function settingsIcon(showBadge: boolean, hideProjects: boolean, hideTags: boolean, onClick: () => void) {
-    return <SettingsIcon classes={iconClasses(onClick)} showBadge={showBadge} hideProjects={hideProjects} hideTags={hideTags} onClick={onClick} />;
+export function settingsIcon(
+    showBadge: boolean,
+    expandTodayList: boolean,
+    hideProjects: boolean,
+    hideTags: boolean,
+    onClick: () => void) {
+    return (
+        <SettingsIcon
+            classes={iconClasses(onClick)}
+            showBadge={showBadge}
+            expandTodayList={expandTodayList}
+            hideProjects={hideProjects}
+            hideTags={hideTags}
+            onClick={onClick}
+        />
+    );
 }
 
 function iconClasses(onClick?: () => void) {

@@ -2,17 +2,25 @@ import React from 'react';
 import { SettingsOutlined } from '@mui/icons-material';
 import { Button, FormControl, FormControlLabel, FormGroup, FormLabel, Popover, Stack, Switch } from '@mui/material';
 import { updateSettings } from '../dao/itemDao';
+import { Settings } from '../types/all';
 
 interface Props {
     classes: string;
     showBadge: boolean;
+    expandTodayList: boolean;
     hideProjects: boolean;
     hideTags: boolean;
     onClick(): void;
 }
 
-function SettingsIcon({ classes, showBadge, hideProjects, hideTags, onClick }: Props) {
+function SettingsIcon({ classes, showBadge, expandTodayList, hideProjects, hideTags, onClick }: Props) {
     const [anchorEl, setAnchorEl] = React.useState<any>(null);
+    const settings: Settings = {
+        showBadge: showBadge,
+        expandTodayList: expandTodayList,
+        hideProjects: hideProjects,
+        hideTags: hideTags
+    };
 
     return (
         <div>
@@ -35,11 +43,9 @@ function SettingsIcon({ classes, showBadge, hideProjects, hideTags, onClick }: P
                                     checked={showBadge}
                                     onChange={(event) => {
                                         setAnchorEl(null);
-                                        updateSettings({
-                                            showBadge: event.target.checked,
-                                            hideProjects: hideProjects,
-                                            hideTags: hideTags
-                                        }, onClick);
+                                        updateSettings(
+                                            { ...settings, ...{ showBadge: event.target.checked } },
+                                            onClick);
                                     }}
                                 />
                             }
@@ -48,14 +54,26 @@ function SettingsIcon({ classes, showBadge, hideProjects, hideTags, onClick }: P
                         <FormControlLabel
                             control={
                                 <Switch
+                                    checked={expandTodayList}
+                                    onChange={(event) => {
+                                        setAnchorEl(null);
+                                        updateSettings(
+                                            { ...settings, ...{ expandTodayList: event.target.checked } },
+                                            onClick);
+                                    }}
+                                />
+                            }
+                            label="Expand 'Today' task list at start"
+                        />
+                        <FormControlLabel
+                            control={
+                                <Switch
                                     checked={hideProjects}
                                     onChange={(event) => {
                                         setAnchorEl(null);
-                                        updateSettings({
-                                            showBadge: showBadge,
-                                            hideProjects: event.target.checked,
-                                            hideTags: hideTags
-                                        }, onClick);
+                                        updateSettings(
+                                            { ...settings, ...{ hideProjects: event.target.checked } },
+                                            onClick);
                                     }}
                                 />
                             }
@@ -67,11 +85,9 @@ function SettingsIcon({ classes, showBadge, hideProjects, hideTags, onClick }: P
                                     checked={hideTags}
                                     onChange={(event) => {
                                         setAnchorEl(null);
-                                        updateSettings({
-                                            showBadge: showBadge,
-                                            hideProjects: hideProjects,
-                                            hideTags: event.target.checked
-                                        }, onClick);
+                                        updateSettings(
+                                            { ...settings, ...{ hideTags: event.target.checked } },
+                                            onClick);
                                     }}
                                 />
                             }
@@ -84,10 +100,11 @@ function SettingsIcon({ classes, showBadge, hideProjects, hideTags, onClick }: P
                         setAnchorEl(null);
                         updateSettings({
                             showBadge: false,
+                            expandTodayList: false,
                             hideProjects: false,
                             hideTags: false
                         }, onClick);
-                    }} disabled={!(showBadge || hideProjects || hideTags)}>Reset All</Button>
+                    }} disabled={!(showBadge || expandTodayList || hideProjects || hideTags)}>Reset All</Button>
                     <Button fullWidth={true} onClick={() => setAnchorEl(null)}>Cancel</Button>
                 </Stack>
             </Popover>

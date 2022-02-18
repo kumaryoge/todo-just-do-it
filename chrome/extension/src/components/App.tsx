@@ -15,6 +15,7 @@ function App() {
         tags: [],
         settings: {
             showBadge: false,
+            expandTodayList: false,
             hideProjects: false,
             hideTags: false
         }
@@ -40,7 +41,13 @@ function App() {
             <Stack direction="row" alignItems="center" justifyContent="space-between" pt={0.5} pl={2} pr={2}>
                 {homeIcon(() => window.location.href = "index.html")}
                 <Typography color="gray">{getGreeting()}</Typography>
-                {settingsIcon(items.settings.showBadge, items.settings.hideProjects, items.settings.hideTags, updateAllItems)}
+                {settingsIcon(
+                    items.settings.showBadge,
+                    items.settings.expandTodayList,
+                    items.settings.hideProjects,
+                    items.settings.hideTags,
+                    updateAllItems
+                )}
             </Stack>
 
             <Divider className="divider">Tasks</Divider>
