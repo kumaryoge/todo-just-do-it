@@ -25,7 +25,7 @@ export function getAllItems(callback: (items: Items) => void) {
             settings: {
                 showBadge: currentItems.settings.showBadge,
                 expandTodayList: currentItems.settings.expandTodayList,
-                dontAutoCollapse: currentItems.settings.dontAutoCollapse,
+                autoCollapseLists: currentItems.settings.autoCollapseLists,
                 hideProjects: currentItems.settings.hideProjects,
                 hideTags: currentItems.settings.hideTags
             }
@@ -41,7 +41,7 @@ export function getAllItems(callback: (items: Items) => void) {
             const settings: Settings = {
                 showBadge: Boolean(result.settings?.showBadge),
                 expandTodayList: Boolean(result.settings?.expandTodayList),
-                dontAutoCollapse: Boolean(result.settings?.dontAutoCollapse),
+                autoCollapseLists: Boolean(result.settings?.autoCollapseLists),
                 hideProjects: Boolean(result.settings?.hideProjects),
                 hideTags: Boolean(result.settings?.hideTags)
             };
@@ -127,7 +127,7 @@ export function updateSettings(settings: Settings, callback: () => void) {
     const newSettings: Settings = {
         showBadge: settings.showBadge,
         expandTodayList: settings.expandTodayList,
-        dontAutoCollapse: settings.dontAutoCollapse,
+        autoCollapseLists: settings.autoCollapseLists,
         hideProjects: settings.hideProjects,
         hideTags: settings.hideTags
     };

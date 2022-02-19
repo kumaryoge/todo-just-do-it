@@ -3,24 +3,24 @@ import { SettingsOutlined } from '@mui/icons-material';
 import { Button, FormControl, FormControlLabel, FormGroup, FormLabel, Popover, Stack, Switch } from '@mui/material';
 import { updateSettings } from '../dao/itemDao';
 import { Settings } from '../types/all';
-import { DEFAULT_SETTINGS } from './common';
+import { DEFAULT_SETTINGS, shallowEquals } from './common';
 
 interface Props {
     classes: string;
     showBadge: boolean;
     expandTodayList: boolean;
-    dontAutoCollapse: boolean;
+    autoCollapseLists: boolean;
     hideProjects: boolean;
     hideTags: boolean;
     onClick(): void;
 }
 
-function SettingsIcon({ classes, showBadge, expandTodayList, dontAutoCollapse, hideProjects, hideTags, onClick }: Props) {
+function SettingsIcon({ classes, showBadge, expandTodayList, autoCollapseLists, hideProjects, hideTags, onClick }: Props) {
     const [anchorEl, setAnchorEl] = React.useState<any>(null);
     const settings: Settings = {
         showBadge: showBadge,
         expandTodayList: expandTodayList,
-        dontAutoCollapse: dontAutoCollapse,
+        autoCollapseLists: autoCollapseLists,
         hideProjects: hideProjects,
         hideTags: hideTags
     };
@@ -66,21 +66,21 @@ function SettingsIcon({ classes, showBadge, expandTodayList, dontAutoCollapse, h
                                     }}
                                 />
                             }
-                            label="Expand 'Today' task list at start"
+                            label="Auto expand 'Today' task list at start"
                         />
                         <FormControlLabel
                             control={
                                 <Switch
-                                    checked={dontAutoCollapse}
+                                    checked={autoCollapseLists}
                                     onChange={(event) => {
                                         setAnchorEl(null);
                                         updateSettings(
-                                            { ...settings, dontAutoCollapse: event.target.checked },
+                                            { ...settings, autoCollapseLists: event.target.checked },
                                             onClick);
                                     }}
                                 />
                             }
-                            label="Don't auto collapse lists when a new list is opened"
+                            label="Auto collapse lists to keep at most one list expanded at a time"
                         />
                         <FormControlLabel
                             control={
@@ -119,7 +119,7 @@ function SettingsIcon({ classes, showBadge, expandTodayList, dontAutoCollapse, h
                             setAnchorEl(null);
                             updateSettings(DEFAULT_SETTINGS, onClick);
                         }}
-                        disabled={!(showBadge || expandTodayList || dontAutoCollapse || hideProjects || hideTags)}
+                        disabled={shallowEquals(settings, DEFAULT_SETTINGS)}
                     >
                         Reset All
                     </Button>

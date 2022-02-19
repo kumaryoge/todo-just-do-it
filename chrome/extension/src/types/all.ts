@@ -8,7 +8,7 @@ export type Items = {
 export type Settings = {
     showBadge: boolean;
     expandTodayList: boolean;
-    dontAutoCollapse: boolean;
+    autoCollapseLists: boolean;
     hideProjects: boolean;
     hideTags: boolean;
 };

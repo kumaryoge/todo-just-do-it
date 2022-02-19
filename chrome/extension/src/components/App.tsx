@@ -18,10 +18,10 @@ function App() {
     const [expandStatus, setExpandStatus] = React.useState<{ [key: string]: boolean; }>({});
 
     const updateExpandStatus = (key: string, value: boolean) => {
-        if (items.settings.dontAutoCollapse) {
-            setExpandStatus({ ...expandStatus, [key]: value });
-        } else {
+        if (items.settings.autoCollapseLists) {
             setExpandStatus({ [key]: value });
+        } else {
+            setExpandStatus({ ...expandStatus, [key]: value });
         }
     };
     const updateAllItems = () => getAllItems(items => {
@@ -50,7 +50,7 @@ function App() {
                 {settingsIcon(
                     items.settings.showBadge,
                     items.settings.expandTodayList,
-                    items.settings.dontAutoCollapse,
+                    items.settings.autoCollapseLists,
                     items.settings.hideProjects,
                     items.settings.hideTags,
                     updateAllItems

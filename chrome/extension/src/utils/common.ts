@@ -5,8 +5,8 @@ export const TOOLTIP_ENTER_DELAY = 700;
 export const TOOLTIP_LEAVE_DELAY = 200;
 export const DEFAULT_SETTINGS: Settings = {
     showBadge: false,
-    expandTodayList: false,
-    dontAutoCollapse: false,
+    expandTodayList: true,
+    autoCollapseLists: true,
     hideProjects: false,
     hideTags: false
 };
@@ -120,4 +120,18 @@ export function truncate(str: string): string {
     }
     const maxLen = 2;
     return str.length <= maxLen ? str : str.substring(0, maxLen) + "..";
+}
+
+export function shallowEquals(object1: any, object2: any) {
+    const keys1 = Object.keys(object1);
+    const keys2 = Object.keys(object2);
+    if (keys1.length !== keys2.length) {
+        return false;
+    }
+    for (const key of keys1) {
+        if (object1[key] !== object2[key]) {
+            return false;
+        }
+    }
+    return true;
 }
