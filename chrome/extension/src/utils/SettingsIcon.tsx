@@ -3,21 +3,24 @@ import { SettingsOutlined } from '@mui/icons-material';
 import { Button, FormControl, FormControlLabel, FormGroup, FormLabel, Popover, Stack, Switch } from '@mui/material';
 import { updateSettings } from '../dao/itemDao';
 import { Settings } from '../types/all';
+import { DEFAULT_SETTINGS } from './common';
 
 interface Props {
     classes: string;
     showBadge: boolean;
     expandTodayList: boolean;
+    dontAutoCollapse: boolean;
     hideProjects: boolean;
     hideTags: boolean;
     onClick(): void;
 }
 
-function SettingsIcon({ classes, showBadge, expandTodayList, hideProjects, hideTags, onClick }: Props) {
+function SettingsIcon({ classes, showBadge, expandTodayList, dontAutoCollapse, hideProjects, hideTags, onClick }: Props) {
     const [anchorEl, setAnchorEl] = React.useState<any>(null);
     const settings: Settings = {
         showBadge: showBadge,
         expandTodayList: expandTodayList,
+        dontAutoCollapse: dontAutoCollapse,
         hideProjects: hideProjects,
         hideTags: hideTags
     };
@@ -44,7 +47,7 @@ function SettingsIcon({ classes, showBadge, expandTodayList, hideProjects, hideT
                                     onChange={(event) => {
                                         setAnchorEl(null);
                                         updateSettings(
-                                            { ...settings, ...{ showBadge: event.target.checked } },
+                                            { ...settings, showBadge: event.target.checked },
                                             onClick);
                                     }}
                                 />
@@ -58,7 +61,7 @@ function SettingsIcon({ classes, showBadge, expandTodayList, hideProjects, hideT
                                     onChange={(event) => {
                                         setAnchorEl(null);
                                         updateSettings(
-                                            { ...settings, ...{ expandTodayList: event.target.checked } },
+                                            { ...settings, expandTodayList: event.target.checked },
                                             onClick);
                                     }}
                                 />
@@ -68,11 +71,25 @@ function SettingsIcon({ classes, showBadge, expandTodayList, hideProjects, hideT
                         <FormControlLabel
                             control={
                                 <Switch
+                                    checked={dontAutoCollapse}
+                                    onChange={(event) => {
+                                        setAnchorEl(null);
+                                        updateSettings(
+                                            { ...settings, dontAutoCollapse: event.target.checked },
+                                            onClick);
+                                    }}
+                                />
+                            }
+                            label="Don't auto collapse lists when a new list is opened"
+                        />
+                        <FormControlLabel
+                            control={
+                                <Switch
                                     checked={hideProjects}
                                     onChange={(event) => {
                                         setAnchorEl(null);
                                         updateSettings(
-                                            { ...settings, ...{ hideProjects: event.target.checked } },
+                                            { ...settings, hideProjects: event.target.checked },
                                             onClick);
                                     }}
                                 />
@@ -86,7 +103,7 @@ function SettingsIcon({ classes, showBadge, expandTodayList, hideProjects, hideT
                                     onChange={(event) => {
                                         setAnchorEl(null);
                                         updateSettings(
-                                            { ...settings, ...{ hideTags: event.target.checked } },
+                                            { ...settings, hideTags: event.target.checked },
                                             onClick);
                                     }}
                                 />
@@ -96,16 +113,22 @@ function SettingsIcon({ classes, showBadge, expandTodayList, hideProjects, hideT
                     </FormGroup>
                 </FormControl>
                 <Stack direction="row">
-                    <Button fullWidth={true} onClick={() => {
-                        setAnchorEl(null);
-                        updateSettings({
-                            showBadge: false,
-                            expandTodayList: false,
-                            hideProjects: false,
-                            hideTags: false
-                        }, onClick);
-                    }} disabled={!(showBadge || expandTodayList || hideProjects || hideTags)}>Reset All</Button>
-                    <Button fullWidth={true} onClick={() => setAnchorEl(null)}>Cancel</Button>
+                    <Button
+                        fullWidth={true}
+                        onClick={() => {
+                            setAnchorEl(null);
+                            updateSettings(DEFAULT_SETTINGS, onClick);
+                        }}
+                        disabled={!(showBadge || expandTodayList || dontAutoCollapse || hideProjects || hideTags)}
+                    >
+                        Reset All
+                    </Button>
+                    <Button
+                        fullWidth={true}
+                        onClick={() => setAnchorEl(null)}
+                    >
+                        Cancel
+                    </Button>
                 </Stack>
             </Popover>
         </div>

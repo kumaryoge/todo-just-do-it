@@ -1,5 +1,5 @@
 import React from 'react';
-import { filterTodaysTasks, getGreeting } from '../utils/common';
+import { DEFAULT_SETTINGS, filterTodaysTasks, getGreeting } from '../utils/common';
 import TasksContainer from './TasksContainer';
 import ProjectsContainer from './ProjectsContainer';
 import TagsContainer from './TagsContainer';
@@ -13,16 +13,22 @@ function App() {
         tasks: [],
         projects: [],
         tags: [],
-        settings: {
-            showBadge: false,
-            expandTodayList: false,
-            hideProjects: false,
-            hideTags: false
-        }
+        settings: DEFAULT_SETTINGS
     });
+    const [expandStatus, setExpandStatus] = React.useState<{ [key: string]: boolean; }>({});
 
+    const updateExpandStatus = (key: string, value: boolean) => {
+        if (items.settings.dontAutoCollapse) {
+            setExpandStatus({ ...expandStatus, [key]: value });
+        } else {
+            setExpandStatus({ [key]: value });
+        }
+    };
     const updateAllItems = () => getAllItems(items => {
         setItems(items);
+        if (Object.keys(expandStatus).length === 0) {
+            setExpandStatus({ today: items.settings.expandTodayList });
+        }
         if (items.settings.showBadge) {
             const numTasksToday = filterTodaysTasks(items.tasks).length;
             const strTasksToday = numTasksToday + ` ${numTasksToday > 1 ? "tasks" : "task"} today`;
@@ -44,6 +50,7 @@ function App() {
                 {settingsIcon(
                     items.settings.showBadge,
                     items.settings.expandTodayList,
+                    items.settings.dontAutoCollapse,
                     items.settings.hideProjects,
                     items.settings.hideTags,
                     updateAllItems
@@ -51,13 +58,32 @@ function App() {
             </Stack>
 
             <Divider className="divider">Tasks</Divider>
-            <TasksContainer items={items} onChange={updateAllItems} />
+            <TasksContainer
+                items={items}
+                onChange={updateAllItems}
+                expandStatus={expandStatus}
+                updateExpandStatus={(key, value) => updateExpandStatus(key, value)}
+            />
 
             {!items.settings.hideProjects && <Divider className="divider">Projects</Divider>}
-            {!items.settings.hideProjects && <ProjectsContainer items={items} onChange={updateAllItems} />}
+            {!items.settings.hideProjects &&
+                <ProjectsContainer
+                    items={items}
+                    onChange={updateAllItems}
+                    expand={expandStatus.projects}
+                    onExpand={(expanded) => updateExpandStatus("projects", expanded)}
+                />
+            }
 
             {!items.settings.hideTags && <Divider className="divider">Tags</Divider>}
-            {!items.settings.hideTags && <TagsContainer items={items} onChange={updateAllItems} />}
+            {!items.settings.hideTags &&
+                <TagsContainer
+                    items={items}
+                    onChange={updateAllItems}
+                    expand={expandStatus.tags}
+                    onExpand={(expanded) => updateExpandStatus("tags", expanded)}
+                />
+            }
         </div>
     );
 }

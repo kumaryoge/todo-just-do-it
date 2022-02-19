@@ -1,8 +1,15 @@
-import { DueDate, Task, TaskListType } from "../types/all";
+import { DueDate, Settings, Task, TaskListType } from "../types/all";
 
 export const ITEM_NAME_MAX_LENGTH = 512;
 export const TOOLTIP_ENTER_DELAY = 700;
 export const TOOLTIP_LEAVE_DELAY = 200;
+export const DEFAULT_SETTINGS: Settings = {
+    showBadge: false,
+    expandTodayList: false,
+    dontAutoCollapse: false,
+    hideProjects: false,
+    hideTags: false
+};
 
 export function getGreeting() {
     const hour = new Date().getHours();

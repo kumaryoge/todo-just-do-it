@@ -12,9 +12,11 @@ import {
 interface Props {
     items: Items;
     onChange(): void;
+    expandStatus: { [key: string]: boolean; };
+    updateExpandStatus(key: string, value: boolean): void;
 }
 
-function TasksContainer({ items, onChange }: Props) {
+function TasksContainer({ items, onChange, expandStatus, updateExpandStatus }: Props) {
     const tasksForProject = (projectId: number) => items.tasks.filter(task => task.projectId === projectId);
     const tasksForTag = (tagId: number) => items.tasks.filter(task => task.tagIds?.includes(tagId));
 
@@ -25,7 +27,8 @@ function TasksContainer({ items, onChange }: Props) {
                 name="Today"
                 tasks={filterTodaysTasks(items.tasks)}
                 onChange={onChange}
-                expand={items.settings.expandTodayList}
+                expand={expandStatus.today}
+                onExpand={(expanded) => updateExpandStatus("today", expanded)}
                 hideProjects={items.settings.hideProjects}
                 hideTags={items.settings.hideTags}
             />
@@ -34,6 +37,8 @@ function TasksContainer({ items, onChange }: Props) {
                 name="Tomorrow"
                 tasks={filterTomorrowsTasks(items.tasks)}
                 onChange={onChange}
+                expand={expandStatus.tomorrow}
+                onExpand={(expanded) => updateExpandStatus("tomorrow", expanded)}
                 hideProjects={items.settings.hideProjects}
                 hideTags={items.settings.hideTags}
             />
@@ -42,6 +47,8 @@ function TasksContainer({ items, onChange }: Props) {
                 name="Upcoming"
                 tasks={filterUpcomingTasks(items.tasks)}
                 onChange={onChange}
+                expand={expandStatus.upcoming}
+                onExpand={(expanded) => updateExpandStatus("upcoming", expanded)}
                 hideProjects={items.settings.hideProjects}
                 hideTags={items.settings.hideTags}
             />
@@ -50,6 +57,8 @@ function TasksContainer({ items, onChange }: Props) {
                 name="Unscheduled"
                 tasks={filterUnscheduledTasks(items.tasks)}
                 onChange={onChange}
+                expand={expandStatus.unscheduled}
+                onExpand={(expanded) => updateExpandStatus("unscheduled", expanded)}
                 hideProjects={items.settings.hideProjects}
                 hideTags={items.settings.hideTags}
             />
@@ -58,6 +67,8 @@ function TasksContainer({ items, onChange }: Props) {
                 name="Completed"
                 tasks={filterCompletedTasks(items.tasks)}
                 onChange={onChange}
+                expand={expandStatus.completed}
+                onExpand={(expanded) => updateExpandStatus("completed", expanded)}
                 hideProjects={items.settings.hideProjects}
                 hideTags={items.settings.hideTags}
             />
@@ -70,6 +81,8 @@ function TasksContainer({ items, onChange }: Props) {
                         name={project.name}
                         tasks={tasksForProject(project.id)}
                         onChange={onChange}
+                        expand={expandStatus["project" + project.id]}
+                        onExpand={(expanded) => updateExpandStatus("project" + project.id, expanded)}
                         hideProjects={items.settings.hideProjects}
                         hideTags={items.settings.hideTags}
                     />
@@ -83,6 +96,8 @@ function TasksContainer({ items, onChange }: Props) {
                         name={tag.name}
                         tasks={tasksForTag(tag.id)}
                         onChange={onChange}
+                        expand={expandStatus["tag" + tag.id]}
+                        onExpand={(expanded) => updateExpandStatus("tag" + tag.id, expanded)}
                         hideProjects={items.settings.hideProjects}
                         hideTags={items.settings.hideTags}
                     />

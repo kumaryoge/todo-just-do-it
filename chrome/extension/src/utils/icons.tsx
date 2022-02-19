@@ -12,7 +12,7 @@ import {
     DateRangeRounded,
     HomeOutlined
 } from "@mui/icons-material";
-import { Settings, TaskListType } from "../types/all";
+import { TaskListType } from "../types/all";
 import DeleteIcon from "./DeleteIcon";
 import SettingsIcon from "./SettingsIcon";
 
@@ -70,6 +70,7 @@ export function deleteIcon(onClick: () => void) {
 export function settingsIcon(
     showBadge: boolean,
     expandTodayList: boolean,
+    dontAutoCollapse: boolean,
     hideProjects: boolean,
     hideTags: boolean,
     onClick: () => void) {
@@ -78,6 +79,7 @@ export function settingsIcon(
             classes={iconClasses(onClick)}
             showBadge={showBadge}
             expandTodayList={expandTodayList}
+            dontAutoCollapse={dontAutoCollapse}
             hideProjects={hideProjects}
             hideTags={hideTags}
             onClick={onClick}

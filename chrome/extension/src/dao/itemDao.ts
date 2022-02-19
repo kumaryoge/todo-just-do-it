@@ -1,15 +1,11 @@
 import { Item, Items, Project, Settings, Tag, Task } from "../types/all";
+import { DEFAULT_SETTINGS } from "../utils/common";
 
 const currentItems: Items = {
     tasks: [],
     projects: [],
     tags: [],
-    settings: {
-        showBadge: false,
-        expandTodayList: false,
-        hideProjects: false,
-        hideTags: false
-    }
+    settings: DEFAULT_SETTINGS
 };
 
 export function getCurrentProjects() {
@@ -29,6 +25,7 @@ export function getAllItems(callback: (items: Items) => void) {
             settings: {
                 showBadge: currentItems.settings.showBadge,
                 expandTodayList: currentItems.settings.expandTodayList,
+                dontAutoCollapse: currentItems.settings.dontAutoCollapse,
                 hideProjects: currentItems.settings.hideProjects,
                 hideTags: currentItems.settings.hideTags
             }
@@ -44,6 +41,7 @@ export function getAllItems(callback: (items: Items) => void) {
             const settings: Settings = {
                 showBadge: Boolean(result.settings?.showBadge),
                 expandTodayList: Boolean(result.settings?.expandTodayList),
+                dontAutoCollapse: Boolean(result.settings?.dontAutoCollapse),
                 hideProjects: Boolean(result.settings?.hideProjects),
                 hideTags: Boolean(result.settings?.hideTags)
             };
@@ -129,6 +127,7 @@ export function updateSettings(settings: Settings, callback: () => void) {
     const newSettings: Settings = {
         showBadge: settings.showBadge,
         expandTodayList: settings.expandTodayList,
+        dontAutoCollapse: settings.dontAutoCollapse,
         hideProjects: settings.hideProjects,
         hideTags: settings.hideTags
     };

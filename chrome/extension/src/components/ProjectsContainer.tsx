@@ -8,11 +8,19 @@ import { Accordion, AccordionDetails, AccordionSummary, Stack, Typography } from
 interface Props {
     items: Items;
     onChange(): void;
+    expand: boolean;
+    onExpand(expanded: boolean): void;
 }
 
-function ProjectsContainer({ items, onChange }: Props) {
+function ProjectsContainer({ items, onChange, expand, onExpand }: Props) {
+    const [isExpanded, setExpanded] = React.useState(false);
+    React.useEffect(() => setExpanded(expand), [expand]);
+
     return (
-        <Accordion>
+        <Accordion
+            expanded={isExpanded}
+            onChange={(event, newExpanded) => onExpand(newExpanded)}
+        >
             <AccordionSummary
                 expandIcon={<ExpandMore className="project" />}
             >

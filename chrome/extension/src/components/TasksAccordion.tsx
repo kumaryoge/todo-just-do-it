@@ -12,14 +12,15 @@ interface Props {
     typeId?: number;
     name: string;
     tasks: Task[];
-    expand?: boolean;
+    onChange(): void;
+    expand: boolean;
+    onExpand(expanded: boolean): void;
     hideProjects: boolean;
     hideTags: boolean;
-    onChange(): void;
 }
 
-function TasksAccordion({ type, typeId, name, tasks, expand, hideProjects, hideTags, onChange }: Props) {
-    const [isExpanded, setExpanded] = React.useState(expand);
+function TasksAccordion({ type, typeId, name, tasks, onChange, expand, onExpand, hideProjects, hideTags }: Props) {
+    const [isExpanded, setExpanded] = React.useState(false);
     React.useEffect(() => setExpanded(expand), [expand]);
 
     const projectIdString = (projectId?: number) => {
@@ -32,7 +33,7 @@ function TasksAccordion({ type, typeId, name, tasks, expand, hideProjects, hideT
     return (
         <Accordion
             expanded={isExpanded}
-            onChange={(event, newExpanded) => setExpanded(newExpanded)}
+            onChange={(event, newExpanded) => onExpand(newExpanded)}
         >
             <AccordionSummary
                 expandIcon={<ExpandMore className={type} />}
