@@ -8,18 +8,18 @@ import { DEFAULT_SETTINGS, shallowEquals } from './common';
 interface Props {
     classes: string;
     showBadge: boolean;
-    expandTodayList: boolean;
+    autoExpandTodayList: boolean;
     autoCollapseLists: boolean;
     hideProjects: boolean;
     hideTags: boolean;
     onClick(): void;
 }
 
-function SettingsIcon({ classes, showBadge, expandTodayList, autoCollapseLists, hideProjects, hideTags, onClick }: Props) {
+function SettingsIcon({ classes, showBadge, autoExpandTodayList, autoCollapseLists, hideProjects, hideTags, onClick }: Props) {
     const [anchorEl, setAnchorEl] = React.useState<any>(null);
     const settings: Settings = {
         showBadge: showBadge,
-        expandTodayList: expandTodayList,
+        autoExpandTodayList: autoExpandTodayList,
         autoCollapseLists: autoCollapseLists,
         hideProjects: hideProjects,
         hideTags: hideTags
@@ -57,11 +57,11 @@ function SettingsIcon({ classes, showBadge, expandTodayList, autoCollapseLists, 
                         <FormControlLabel
                             control={
                                 <Switch
-                                    checked={expandTodayList}
+                                    checked={autoExpandTodayList}
                                     onChange={(event) => {
                                         setAnchorEl(null);
                                         updateSettings(
-                                            { ...settings, expandTodayList: event.target.checked },
+                                            { ...settings, autoExpandTodayList: event.target.checked },
                                             onClick);
                                     }}
                                 />

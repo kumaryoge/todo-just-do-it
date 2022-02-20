@@ -24,7 +24,7 @@ export function getAllItems(callback: (items: Items) => void) {
             tags: currentItems.tags.slice(),
             settings: {
                 showBadge: currentItems.settings.showBadge,
-                expandTodayList: currentItems.settings.expandTodayList,
+                autoExpandTodayList: currentItems.settings.autoExpandTodayList,
                 autoCollapseLists: currentItems.settings.autoCollapseLists,
                 hideProjects: currentItems.settings.hideProjects,
                 hideTags: currentItems.settings.hideTags
@@ -38,13 +38,7 @@ export function getAllItems(callback: (items: Items) => void) {
             const tasks: Task[] = result.tasks?.list || [];
             const projects: Project[] = result.projects?.list || [];
             const tags: Tag[] = result.tags?.list || [];
-            const settings: Settings = {
-                showBadge: Boolean(result.settings?.showBadge),
-                expandTodayList: Boolean(result.settings?.expandTodayList),
-                autoCollapseLists: Boolean(result.settings?.autoCollapseLists),
-                hideProjects: Boolean(result.settings?.hideProjects),
-                hideTags: Boolean(result.settings?.hideTags)
-            };
+            const settings: Settings = result.settings || DEFAULT_SETTINGS;
 
             currentItems.tasks = tasks;
             currentItems.projects = projects;
@@ -126,7 +120,7 @@ export function updateItem<T extends Item>(key: "tasks" | "projects" | "tags", i
 export function updateSettings(settings: Settings, callback: () => void) {
     const newSettings: Settings = {
         showBadge: settings.showBadge,
-        expandTodayList: settings.expandTodayList,
+        autoExpandTodayList: settings.autoExpandTodayList,
         autoCollapseLists: settings.autoCollapseLists,
         hideProjects: settings.hideProjects,
         hideTags: settings.hideTags

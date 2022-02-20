@@ -27,7 +27,7 @@ function App() {
     const updateAllItems = () => getAllItems(items => {
         setItems(items);
         if (Object.keys(expandStatus).length === 0) {
-            setExpandStatus({ today: items.settings.expandTodayList });
+            setExpandStatus({ today: items.settings.autoExpandTodayList });
         }
         if (items.settings.showBadge) {
             const numTasksToday = filterTodaysTasks(items.tasks).length;
@@ -49,7 +49,7 @@ function App() {
                 <Typography color="gray">{getGreeting()}</Typography>
                 {settingsIcon(
                     items.settings.showBadge,
-                    items.settings.expandTodayList,
+                    items.settings.autoExpandTodayList,
                     items.settings.autoCollapseLists,
                     items.settings.hideProjects,
                     items.settings.hideTags,

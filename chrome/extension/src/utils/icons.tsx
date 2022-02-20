@@ -69,7 +69,7 @@ export function deleteIcon(onClick: () => void) {
 
 export function settingsIcon(
     showBadge: boolean,
-    expandTodayList: boolean,
+    autoExpandTodayList: boolean,
     autoCollapseLists: boolean,
     hideProjects: boolean,
     hideTags: boolean,
@@ -78,7 +78,7 @@ export function settingsIcon(
         <SettingsIcon
             classes={iconClasses(onClick)}
             showBadge={showBadge}
-            expandTodayList={expandTodayList}
+            autoExpandTodayList={autoExpandTodayList}
             autoCollapseLists={autoCollapseLists}
             hideProjects={hideProjects}
             hideTags={hideTags}

@@ -5,7 +5,7 @@ export const TOOLTIP_ENTER_DELAY = 700;
 export const TOOLTIP_LEAVE_DELAY = 200;
 export const DEFAULT_SETTINGS: Settings = {
     showBadge: false,
-    expandTodayList: true,
+    autoExpandTodayList: true,
     autoCollapseLists: true,
     hideProjects: false,
     hideTags: false
