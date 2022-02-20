@@ -6,6 +6,7 @@ import { getCurrentTags } from '../dao/itemDao';
 import { TOOLTIP_ENTER_DELAY, TOOLTIP_LEAVE_DELAY, truncate } from './common';
 
 interface Props {
+    completed?: boolean;
     tagIds?: number[];
     onClick(tagIds?: number[]): void;
 }
@@ -20,7 +21,7 @@ function getTagsByIds(tagIds: number[]): Tag[] {
     return tags;
 }
 
-function TagsSelector({ tagIds, onClick }: Props) {
+function TagsSelector({ completed, tagIds, onClick }: Props) {
     const [anchorEl, setAnchorEl] = React.useState<any>(null);
     const [tags, setTags] = React.useState<Tag[]>(tagIds ? getTagsByIds(tagIds) : []);
 
@@ -37,6 +38,7 @@ function TagsSelector({ tagIds, onClick }: Props) {
                     size="small"
                     icon={tagIcon()}
                     onClick={event => setAnchorEl(event.currentTarget)}
+                    sx={completed ? { color: "gray" } : {}}
                 />
             </Tooltip>
             <Popover

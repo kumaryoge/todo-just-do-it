@@ -40,11 +40,12 @@ function ItemView({ type, name, onUpdateItem, completed }: Props) {
                 setFocus(false);
                 setValue(name);
             }}
-            readOnly={!isFocus || completed}
+            readOnly={!isFocus}
             disableUnderline={true}
             multiline={true}
             fullWidth={true}
             inputProps={{ maxLength: ITEM_NAME_MAX_LENGTH }}
+            sx={completed ? { color: "gray" } : {}}
         />
     );
 }

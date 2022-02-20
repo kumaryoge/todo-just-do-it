@@ -7,11 +7,12 @@ import { DueDate } from '../types/all';
 import { isPastDate, toDueDate, toNormalDate, TOOLTIP_ENTER_DELAY, TOOLTIP_LEAVE_DELAY } from './common';
 
 interface Props {
+    completed?: boolean;
     dueDate?: DueDate;
     onClick(dueDate?: DueDate): void;
 }
 
-function DateSelector({ dueDate, onClick }: Props) {
+function DateSelector({ completed, dueDate, onClick }: Props) {
     const [anchorEl, setAnchorEl] = React.useState<any>(null);
     const [date, setDate] = React.useState<Date | null>(dueDate ? toNormalDate(dueDate) : null);
     const dateFormat: Intl.DateTimeFormatOptions = { weekday: "short", month: "short", day: "numeric" };
@@ -26,11 +27,12 @@ function DateSelector({ dueDate, onClick }: Props) {
             >
                 <Chip
                     label={<Typography fontSize="small">{(date && date.toLocaleDateString(navigator.language, dateFormat)) || "+"}</Typography>}
-                    color={date && isPastDate(date) ? "error" : "default"}
+                    color={!completed && date && isPastDate(date) ? "error" : "default"}
                     variant="outlined"
                     size="small"
                     icon={dateIcon()}
                     onClick={event => setAnchorEl(event.currentTarget)}
+                    sx={completed ? { color: "gray" } : {}}
                 />
             </Tooltip>
             <Popover

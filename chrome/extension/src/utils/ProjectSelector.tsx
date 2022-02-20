@@ -6,6 +6,7 @@ import { getCurrentProjects } from '../dao/itemDao';
 import { TOOLTIP_ENTER_DELAY, TOOLTIP_LEAVE_DELAY, truncate } from './common';
 
 interface Props {
+    completed?: boolean;
     projectId?: number;
     onClick(projectId?: number): void;
 }
@@ -18,7 +19,7 @@ function getProjectById(projectId: number): Project | undefined {
     }
 }
 
-function ProjectSelector({ projectId, onClick }: Props) {
+function ProjectSelector({ completed, projectId, onClick }: Props) {
     const [anchorEl, setAnchorEl] = React.useState<any>(null);
     const [project, setProject] = React.useState<Project | undefined>(projectId ? getProjectById(projectId) : undefined);
 
@@ -35,6 +36,7 @@ function ProjectSelector({ projectId, onClick }: Props) {
                     size="small"
                     icon={projectIcon()}
                     onClick={event => setAnchorEl(event.currentTarget)}
+                    sx={completed ? { color: "gray" } : {}}
                 />
             </Tooltip>
             <Popover

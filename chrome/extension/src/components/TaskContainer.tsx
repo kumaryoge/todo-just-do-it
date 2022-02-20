@@ -95,9 +95,27 @@ function TaskContainer({ task, newTaskDueDate, newTaskProjectId, newTaskTagId, h
                     alignItems="center"
                     spacing={0.5}
                 >
-                    {task && !task.completed && <DateSelector dueDate={dueDate} onClick={date => updateDueDate(date)} />}
-                    {task && !task.completed && !hideProjects && <ProjectSelector projectId={projectId} onClick={id => updateProjectId(id)} />}
-                    {task && !task.completed && !hideTags && <TagsSelector tagIds={tagIds} onClick={ids => updateTagIds(ids)} />}
+                    {task &&
+                        <DateSelector
+                            completed={task.completed}
+                            dueDate={dueDate}
+                            onClick={date => updateDueDate(date)}
+                        />
+                    }
+                    {task && !hideProjects &&
+                        <ProjectSelector
+                            completed={task.completed}
+                            projectId={projectId}
+                            onClick={id => updateProjectId(id)}
+                        />
+                    }
+                    {task && !hideTags &&
+                        <TagsSelector
+                            completed={task.completed}
+                            tagIds={tagIds}
+                            onClick={ids => updateTagIds(ids)}
+                        />
+                    }
                 </Stack>
             </Stack>
             {task && deleteIcon(() => deleteItem("tasks", task, onChange))}
