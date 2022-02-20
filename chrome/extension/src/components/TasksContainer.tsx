@@ -17,8 +17,8 @@ interface Props {
 }
 
 function TasksContainer({ items, onChange, expandStatus, updateExpandStatus }: Props) {
-    const tasksForProject = (projectId: number) => items.tasks.filter(task => task.projectId === projectId);
-    const tasksForTag = (tagId: number) => items.tasks.filter(task => task.tagIds?.includes(tagId));
+    const tasksForProject = (projectId: number) => items.tasks.filter(task => !task.completed && task.projectId === projectId);
+    const tasksForTag = (tagId: number) => items.tasks.filter(task => !task.completed && task.tagIds?.includes(tagId));
 
     return (
         <div>
