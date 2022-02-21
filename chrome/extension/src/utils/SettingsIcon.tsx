@@ -26,6 +26,7 @@ function SettingsIcon({ classes, showBadge, autoExpandTodayList, autoCollapseLis
 
     const [anchorEl, setAnchorEl] = React.useState<any>(null);
     const [settings, setSettings] = React.useState(savedSettings);
+    React.useEffect(() => setSettings(savedSettings), [showBadge, autoExpandTodayList, autoCollapseLists, hideProjects, hideTags]);
 
     return (
         <div>
