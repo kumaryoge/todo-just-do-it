@@ -27,7 +27,7 @@ function TaskContainer({ task, newTaskDueDate, newTaskProjectId, newTaskTagId, h
 
     const toggleCompletion = () => {
         if (task) {
-            if (task.dueDate?.repeat) {
+            if (!task.completed && task.dueDate?.repeat) {
                 task.dueDate = getNextDueDate(task.dueDate, task.dueDate.repeat);
             } else {
                 task.completed = !task.completed;
