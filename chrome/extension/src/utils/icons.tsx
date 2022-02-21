@@ -10,7 +10,8 @@ import {
     TagRounded,
     EventAvailableRounded,
     DateRangeRounded,
-    HomeOutlined
+    HomeOutlined,
+    EventRepeatOutlined
 } from "@mui/icons-material";
 import { TaskListType } from "../types/all";
 import DeleteIcon from "./DeleteIcon";
@@ -57,6 +58,10 @@ export function completedTaskIcon(onClick?: () => void) {
 
 export function dateIcon(onClick?: () => void) {
     return <EventOutlined className={iconClasses(onClick)} fontSize="small" onClick={onClick} />;
+}
+
+export function dateRepeatIcon(onClick?: () => void) {
+    return <EventRepeatOutlined className={iconClasses(onClick)} fontSize="small" onClick={onClick} />;
 }
 
 export function addIcon(onClick?: () => void) {

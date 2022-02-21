@@ -39,13 +39,15 @@ export type DueDate = {
     day: number;
     month: number;
     year: number;
-    recurring?: RecurringPattern;
+    repeat?: RepeatPattern;
 };
 
-export type RecurringPattern = {
-    repeat: "daily" | "weekly" | "monthly" | "yearly";
+export type RepeatPattern = {
+    frequency: Frequency;
     interval: number;
 };
+
+export type Frequency = "day" | "week" | "month" | "year";
 
 export type Pomodoro = {
     estimate: number;

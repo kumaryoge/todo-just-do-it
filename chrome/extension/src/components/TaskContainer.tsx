@@ -8,6 +8,7 @@ import { Stack } from '@mui/material';
 import DateSelector from '../utils/DateSelector';
 import ProjectSelector from '../utils/ProjectSelector';
 import TagsSelector from '../utils/TagsSelector';
+import { getNextDueDate } from '../utils/common';
 
 interface Props {
     task?: Task;
@@ -26,7 +27,11 @@ function TaskContainer({ task, newTaskDueDate, newTaskProjectId, newTaskTagId, h
 
     const toggleCompletion = () => {
         if (task) {
-            task.completed = !task.completed;
+            if (task.dueDate?.repeat) {
+                task.dueDate = getNextDueDate(task.dueDate, task.dueDate.repeat);
+            } else {
+                task.completed = !task.completed;
+            }
             updateItem("tasks", task, onChange);
         }
     };

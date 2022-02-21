@@ -20,18 +20,20 @@ function getProjectById(projectId: number): Project | undefined {
 }
 
 function ProjectSelector({ completed, projectId, onClick }: Props) {
+    const savedProject = projectId ? getProjectById(projectId) : undefined;
+
     const [anchorEl, setAnchorEl] = React.useState<any>(null);
-    const [project, setProject] = React.useState<Project | undefined>(projectId ? getProjectById(projectId) : undefined);
+    const [project, setProject] = React.useState<Project | undefined>(savedProject);
 
     return (
         <div>
             <Tooltip
-                title={<Typography>{project?.name || "Add this task to a project"}</Typography>}
+                title={<Typography>{savedProject?.name || "Add this task to a project"}</Typography>}
                 enterDelay={TOOLTIP_ENTER_DELAY}
                 leaveDelay={TOOLTIP_LEAVE_DELAY}
             >
                 <Chip
-                    label={<Typography fontSize="small">{(project && truncate(project.name)) || "+"}</Typography>}
+                    label={<Typography fontSize="small">{(savedProject && truncate(savedProject.name)) || "+"}</Typography>}
                     variant="outlined"
                     size="small"
                     icon={projectIcon()}
@@ -42,17 +44,19 @@ function ProjectSelector({ completed, projectId, onClick }: Props) {
             <Popover
                 open={Boolean(anchorEl)}
                 anchorEl={anchorEl}
-                onClose={() => setAnchorEl(null)}
+                onClose={() => {
+                    setAnchorEl(null);
+                    setProject(savedProject);
+                }}
             >
                 <FormControl sx={{ p: 2 }}>
                     <FormLabel>Project</FormLabel>
                     <RadioGroup
+                        key={project?.id}
                         value={project?.id}
                         onChange={(event) => {
-                            setAnchorEl(null);
                             const projectId: number = +event.target.value;
                             setProject(getProjectById(projectId));
-                            onClick(projectId);
                         }}
                     >
                         {getCurrentProjects().map(project =>
@@ -64,12 +68,23 @@ function ProjectSelector({ completed, projectId, onClick }: Props) {
                     </RadioGroup>
                 </FormControl>
                 <Stack direction="row">
-                    <Button fullWidth={true} onClick={() => {
-                        setAnchorEl(null);
-                        setProject(undefined);
-                        onClick(undefined);
-                    }} disabled={project === undefined}>Clear</Button>
-                    <Button fullWidth={true} onClick={() => setAnchorEl(null)}>Cancel</Button>
+                    <Button
+                        fullWidth={true}
+                        onClick={() => setProject(undefined)}
+                        disabled={project === undefined}
+                    >
+                        Reset
+                    </Button>
+                    <Button
+                        fullWidth={true}
+                        onClick={() => {
+                            setAnchorEl(null);
+                            onClick(project?.id);
+                        }}
+                        disabled={project?.id === savedProject?.id}
+                    >
+                        Save
+                    </Button>
                 </Stack>
             </Popover>
         </div>

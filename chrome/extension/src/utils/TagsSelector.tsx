@@ -3,7 +3,7 @@ import { Button, Checkbox, Chip, FormControl, FormControlLabel, FormGroup, FormL
 import { tagIcon } from './icons';
 import { Tag } from '../types/all';
 import { getCurrentTags } from '../dao/itemDao';
-import { TOOLTIP_ENTER_DELAY, TOOLTIP_LEAVE_DELAY, truncate } from './common';
+import { shallowEquals, TOOLTIP_ENTER_DELAY, TOOLTIP_LEAVE_DELAY, truncate } from './common';
 
 interface Props {
     completed?: boolean;
@@ -22,18 +22,20 @@ function getTagsByIds(tagIds: number[]): Tag[] {
 }
 
 function TagsSelector({ completed, tagIds, onClick }: Props) {
+    const savedTags = tagIds ? getTagsByIds(tagIds) : [];
+
     const [anchorEl, setAnchorEl] = React.useState<any>(null);
-    const [tags, setTags] = React.useState<Tag[]>(tagIds ? getTagsByIds(tagIds) : []);
+    const [tags, setTags] = React.useState<Tag[]>(savedTags);
 
     return (
         <div>
             <Tooltip
-                title={<Typography>{tags.map(tag => tag.name).join() || "Add one or more tags to this task"}</Typography>}
+                title={<Typography>{savedTags.map(tag => tag.name).join() || "Add one or more tags to this task"}</Typography>}
                 enterDelay={TOOLTIP_ENTER_DELAY}
                 leaveDelay={TOOLTIP_LEAVE_DELAY}
             >
                 <Chip
-                    label={<Typography fontSize="small">{truncate(tags.map(tag => tag.name).join()) || "+"}</Typography>}
+                    label={<Typography fontSize="small">{truncate(savedTags.map(tag => tag.name).join()) || "+"}</Typography>}
                     variant="outlined"
                     size="small"
                     icon={tagIcon()}
@@ -44,7 +46,10 @@ function TagsSelector({ completed, tagIds, onClick }: Props) {
             <Popover
                 open={Boolean(anchorEl)}
                 anchorEl={anchorEl}
-                onClose={() => setAnchorEl(null)}
+                onClose={() => {
+                    setAnchorEl(null);
+                    setTags(savedTags);
+                }}
             >
                 <FormControl sx={{ p: 2 }}>
                     <FormLabel>Tags</FormLabel>
@@ -54,13 +59,11 @@ function TagsSelector({ completed, tagIds, onClick }: Props) {
                                 <Checkbox
                                     checked={tags.map(t => t.id).includes(tag.id)}
                                     onChange={(event) => {
-                                        setAnchorEl(null);
                                         let newTags = tags.filter(t => t.id !== tag.id);
                                         if (event.target.checked) {
                                             newTags = newTags.concat(tag);
                                         }
                                         setTags(newTags);
-                                        onClick(newTags.map(t => t.id));
                                     }}
                                 />
                             } />
@@ -71,12 +74,23 @@ function TagsSelector({ completed, tagIds, onClick }: Props) {
                     </FormGroup>
                 </FormControl>
                 <Stack direction="row">
-                    <Button fullWidth={true} onClick={() => {
-                        setAnchorEl(null);
-                        setTags([]);
-                        onClick(undefined);
-                    }} disabled={tags.length === 0}>Clear</Button>
-                    <Button fullWidth={true} onClick={() => setAnchorEl(null)}>Cancel</Button>
+                    <Button
+                        fullWidth={true}
+                        onClick={() => setTags([])}
+                        disabled={tags.length === 0}
+                    >
+                        Reset
+                    </Button>
+                    <Button
+                        fullWidth={true}
+                        onClick={() => {
+                            setAnchorEl(null);
+                            onClick(tags.map(t => t.id));
+                        }}
+                        disabled={shallowEquals(tags.map(t => t.id).sort(), savedTags.map(t => t.id).sort())}
+                    >
+                        Save
+                    </Button>
                 </Stack>
             </Popover>
         </div>

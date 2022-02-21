@@ -1,4 +1,4 @@
-import { DueDate, Settings, Task, TaskListType } from "../types/all";
+import { DueDate, RepeatPattern, Settings, Task, TaskListType } from "../types/all";
 
 export const ITEM_NAME_MAX_LENGTH = 512;
 export const TOOLTIP_ENTER_DELAY = 700;
@@ -10,6 +10,23 @@ export const DEFAULT_SETTINGS: Settings = {
     hideProjects: false,
     hideTags: false
 };
+
+const dateFormat: Intl.DateTimeFormatOptions = { weekday: "short", month: "short", day: "numeric" };
+const dateFormatLong: Intl.DateTimeFormatOptions = { weekday: "long", year: "numeric", month: "long", day: "numeric" };
+
+export function getDateTooltipTitle(savedDate: Date | null, savedRepeat?: RepeatPattern) {
+    return (savedDate &&
+        (savedDate.toLocaleDateString(navigator.language, dateFormatLong) +
+            (savedRepeat
+                ? ` | Repeats every ${savedRepeat.interval} ${savedRepeat.frequency}${savedRepeat.interval > 1 ? "s" : ""}`
+                : "")
+        )
+    ) || "Add a due date to this task";
+}
+
+export function getDateChipLabel(savedDate: Date | null) {
+    return (savedDate && savedDate.toLocaleDateString(navigator.language, dateFormat)) || "+";
+}
 
 export function getGreeting() {
     const hour = new Date().getHours();
@@ -82,11 +99,12 @@ export function toNormalDate(dueDate: DueDate): Date {
     return new Date(dueDate.year, dueDate.month - 1, dueDate.day);
 }
 
-export function toDueDate(date: Date): DueDate {
+export function toDueDate(date: Date, repeat?: RepeatPattern): DueDate {
     return {
         day: date.getDate(),
         month: date.getMonth() + 1,
-        year: date.getFullYear()
+        year: date.getFullYear(),
+        repeat: repeat
     };
 }
 
@@ -114,6 +132,25 @@ export function getNewTaskDueDate(type: TaskListType): DueDate | undefined {
     }
 }
 
+export function getNextDueDate(dueDate: DueDate, repeat: RepeatPattern) {
+    const date: Date = toNormalDate(dueDate);
+    switch (repeat.frequency) {
+        case "day":
+            date.setDate(date.getDate() + repeat.interval);
+            break;
+        case "week":
+            date.setDate(date.getDate() + repeat.interval * 7);
+            break;
+        case "month":
+            date.setMonth(date.getMonth() + repeat.interval);
+            break;
+        case "year":
+            date.setFullYear(date.getFullYear() + repeat.interval);
+            break;
+    }
+    return toDueDate(date, repeat);
+}
+
 export function truncate(str: string): string {
     if (!str) {
         return str;
@@ -123,6 +160,9 @@ export function truncate(str: string): string {
 }
 
 export function shallowEquals(object1: any, object2: any) {
+    if (!object1 || !object2) {
+        return object1 === object2;
+    }
     const keys1 = Object.keys(object1);
     const keys2 = Object.keys(object2);
     if (keys1.length !== keys2.length) {

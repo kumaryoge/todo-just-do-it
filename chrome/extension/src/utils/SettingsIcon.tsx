@@ -16,14 +16,16 @@ interface Props {
 }
 
 function SettingsIcon({ classes, showBadge, autoExpandTodayList, autoCollapseLists, hideProjects, hideTags, onClick }: Props) {
-    const [anchorEl, setAnchorEl] = React.useState<any>(null);
-    const settings: Settings = {
+    const savedSettings: Settings = {
         showBadge: showBadge,
         autoExpandTodayList: autoExpandTodayList,
         autoCollapseLists: autoCollapseLists,
         hideProjects: hideProjects,
         hideTags: hideTags
     };
+
+    const [anchorEl, setAnchorEl] = React.useState<any>(null);
+    const [settings, setSettings] = React.useState(savedSettings);
 
     return (
         <div>
@@ -35,7 +37,10 @@ function SettingsIcon({ classes, showBadge, autoExpandTodayList, autoCollapseLis
             <Popover
                 open={Boolean(anchorEl)}
                 anchorEl={anchorEl}
-                onClose={() => setAnchorEl(null)}
+                onClose={() => {
+                    setAnchorEl(null);
+                    setSettings(savedSettings);
+                }}
             >
                 <FormControl sx={{ p: 2 }}>
                     <FormLabel sx={{ pb: 1 }}>Settings</FormLabel>
@@ -43,12 +48,9 @@ function SettingsIcon({ classes, showBadge, autoExpandTodayList, autoCollapseLis
                         <FormControlLabel
                             control={
                                 <Switch
-                                    checked={showBadge}
+                                    checked={settings.showBadge}
                                     onChange={(event) => {
-                                        setAnchorEl(null);
-                                        updateSettings(
-                                            { ...settings, showBadge: event.target.checked },
-                                            onClick);
+                                        setSettings({ ...settings, showBadge: event.target.checked });
                                     }}
                                 />
                             }
@@ -57,12 +59,9 @@ function SettingsIcon({ classes, showBadge, autoExpandTodayList, autoCollapseLis
                         <FormControlLabel
                             control={
                                 <Switch
-                                    checked={autoExpandTodayList}
+                                    checked={settings.autoExpandTodayList}
                                     onChange={(event) => {
-                                        setAnchorEl(null);
-                                        updateSettings(
-                                            { ...settings, autoExpandTodayList: event.target.checked },
-                                            onClick);
+                                        setSettings({ ...settings, autoExpandTodayList: event.target.checked });
                                     }}
                                 />
                             }
@@ -71,12 +70,9 @@ function SettingsIcon({ classes, showBadge, autoExpandTodayList, autoCollapseLis
                         <FormControlLabel
                             control={
                                 <Switch
-                                    checked={autoCollapseLists}
+                                    checked={settings.autoCollapseLists}
                                     onChange={(event) => {
-                                        setAnchorEl(null);
-                                        updateSettings(
-                                            { ...settings, autoCollapseLists: event.target.checked },
-                                            onClick);
+                                        setSettings({ ...settings, autoCollapseLists: event.target.checked });
                                     }}
                                 />
                             }
@@ -85,12 +81,9 @@ function SettingsIcon({ classes, showBadge, autoExpandTodayList, autoCollapseLis
                         <FormControlLabel
                             control={
                                 <Switch
-                                    checked={hideProjects}
+                                    checked={settings.hideProjects}
                                     onChange={(event) => {
-                                        setAnchorEl(null);
-                                        updateSettings(
-                                            { ...settings, hideProjects: event.target.checked },
-                                            onClick);
+                                        setSettings({ ...settings, hideProjects: event.target.checked });
                                     }}
                                 />
                             }
@@ -99,12 +92,9 @@ function SettingsIcon({ classes, showBadge, autoExpandTodayList, autoCollapseLis
                         <FormControlLabel
                             control={
                                 <Switch
-                                    checked={hideTags}
+                                    checked={settings.hideTags}
                                     onChange={(event) => {
-                                        setAnchorEl(null);
-                                        updateSettings(
-                                            { ...settings, hideTags: event.target.checked },
-                                            onClick);
+                                        setSettings({ ...settings, hideTags: event.target.checked });
                                     }}
                                 />
                             }
@@ -115,19 +105,20 @@ function SettingsIcon({ classes, showBadge, autoExpandTodayList, autoCollapseLis
                 <Stack direction="row">
                     <Button
                         fullWidth={true}
-                        onClick={() => {
-                            setAnchorEl(null);
-                            updateSettings(DEFAULT_SETTINGS, onClick);
-                        }}
+                        onClick={() => setSettings(DEFAULT_SETTINGS)}
                         disabled={shallowEquals(settings, DEFAULT_SETTINGS)}
                     >
-                        Reset All
+                        Reset
                     </Button>
                     <Button
                         fullWidth={true}
-                        onClick={() => setAnchorEl(null)}
+                        onClick={() => {
+                            setAnchorEl(null);
+                            updateSettings(settings, onClick);
+                        }}
+                        disabled={shallowEquals(settings, savedSettings)}
                     >
-                        Cancel
+                        Save
                     </Button>
                 </Stack>
             </Popover>
