@@ -1,10 +1,10 @@
 import React from 'react';
-import { Button, Chip, MenuItem, Popover, Select, Stack, Switch, TextField, Tooltip, Typography } from '@mui/material';
+import { Button, Chip, IconButton, MenuItem, Popover, Select, Stack, Switch, TextField, Tooltip, Typography } from '@mui/material';
 import { dateIcon, dateRepeatIcon } from './icons';
 import { LocalizationProvider, StaticDatePicker } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import { DueDate, Frequency } from '../types/all';
-import { getDateChipLabel, getDateTooltipTitle, isPastDate, shallowEquals, toDueDate, toNormalDate, TOOLTIP_ENTER_DELAY, TOOLTIP_LEAVE_DELAY } from './common';
+import { DueDate, Frequency, RepeatPattern } from '../types/all';
+import { getDateChipLabel, getDateTooltipTitle, getDefaultWeekDays, getWeekDays, isBitSet, isPastDate, shallowEquals, toDueDate, toggleBit, toNormalDate, TOOLTIP_ENTER_DELAY, TOOLTIP_LEAVE_DELAY } from './common';
 
 interface Props {
     completed?: boolean;
@@ -14,11 +14,22 @@ interface Props {
 
 function DateSelector({ completed, dueDate, onClick }: Props) {
     const savedDate = dueDate ? toNormalDate(dueDate) : null;
-    const savedRepeat = dueDate?.repeat;
+    const savedRepeat = dueDate?.repeat && (
+        dueDate.repeat.weekDays
+            ? {
+                frequency: dueDate.repeat.frequency,
+                interval: dueDate.repeat.interval,
+                weekDays: dueDate.repeat.weekDays
+            }
+            : {
+                frequency: dueDate.repeat.frequency,
+                interval: dueDate.repeat.interval
+            }
+    );
 
     const [anchorEl, setAnchorEl] = React.useState<any>(null);
     const [date, setDate] = React.useState<Date | null>(savedDate);
-    const [repeat, setRepeat] = React.useState(savedRepeat);
+    const [repeat, setRepeat] = React.useState<RepeatPattern | undefined>(savedRepeat);
 
     return (
         <div>
@@ -29,7 +40,7 @@ function DateSelector({ completed, dueDate, onClick }: Props) {
             >
                 <Chip
                     label={<Typography fontSize="small">{getDateChipLabel(savedDate)}</Typography>}
-                    color={!completed && savedDate && isPastDate(savedDate) ? "error" : "default"}
+                    color={!completed && isPastDate(savedDate) ? "error" : "default"}
                     variant="outlined"
                     size="small"
                     icon={savedRepeat ? dateRepeatIcon() : dateIcon()}
@@ -57,68 +68,97 @@ function DateSelector({ completed, dueDate, onClick }: Props) {
                     />
                 </LocalizationProvider>
                 {date &&
-                    <Stack
-                        direction="row"
-                        alignItems="center"
-                        spacing={0.5}
-                        pb={2}
-                        pl={2}
-                    >
-                        <Switch
-                            checked={Boolean(repeat)}
-                            onChange={(event) => {
-                                if (event.target.checked) {
-                                    setRepeat({
-                                        frequency: repeat?.frequency || "day",
-                                        interval: repeat?.interval || 1
-                                    });
-                                } else {
-                                    setRepeat(undefined);
-                                }
-                            }}
-                        />
-                        <Typography>{repeat ? "Repeat every" : "Repeat"}</Typography>
-                        {repeat &&
-                            <Select
-                                value={repeat.interval}
-                                variant="standard"
-                                autoWidth={true}
-                                disableUnderline={true}
+                    <Stack pb={2} pl={2} pr={2}>
+                        <Stack
+                            direction="row"
+                            alignItems="center"
+                            spacing={0.5}
+                        >
+                            <Switch
+                                checked={Boolean(repeat)}
                                 onChange={(event) => {
-                                    setRepeat({ ...repeat, interval: Number(event.target.value) });
-                                }}
-                            >
-                                {Array.from(Array(99).keys()).map(i =>
-                                    <MenuItem value={i + 1}>{i + 1}</MenuItem>
-                                )}
-                            </Select>
-                        }
-                        {repeat &&
-                            <Select
-                                value={repeat.frequency}
-                                variant="standard"
-                                autoWidth={true}
-                                disableUnderline={true}
-                                onChange={(event) => {
-                                    let freq: Frequency = "day";
-                                    switch (event.target.value) {
-                                        case "week":
-                                            freq = "week";
-                                            break;
-                                        case "month":
-                                            freq = "month";
-                                            break;
-                                        case "year":
-                                            freq = "year";
-                                            break;
+                                    if (event.target.checked) {
+                                        setRepeat({
+                                            frequency: "day",
+                                            interval: 1
+                                        });
+                                    } else {
+                                        setRepeat(undefined);
                                     }
-                                    setRepeat({ ...repeat, frequency: freq });
                                 }}
+                            />
+                            <Typography>{repeat ? "Repeat every" : "Repeat"}</Typography>
+                            {repeat &&
+                                <Select
+                                    value={repeat.interval}
+                                    variant="standard"
+                                    autoWidth={true}
+                                    disableUnderline={true}
+                                    onChange={(event) => {
+                                        setRepeat({ ...repeat, interval: Number(event.target.value) });
+                                    }}
+                                >
+                                    {Array.from(Array(99).keys()).map(i =>
+                                        <MenuItem value={i + 1}>{i + 1}</MenuItem>
+                                    )}
+                                </Select>
+                            }
+                            {repeat &&
+                                <Select
+                                    value={repeat.frequency}
+                                    variant="standard"
+                                    autoWidth={true}
+                                    disableUnderline={true}
+                                    onChange={(event) => {
+                                        let freq: Frequency = "day";
+                                        switch (event.target.value) {
+                                            case "week":
+                                                freq = "week";
+                                                break;
+                                            case "month":
+                                                freq = "month";
+                                                break;
+                                            case "year":
+                                                freq = "year";
+                                                break;
+                                        }
+                                        setRepeat({ frequency: freq, interval: repeat.interval });
+                                    }}
+                                >
+                                    {["day", "week", "month", "year"].map(freq =>
+                                        <MenuItem value={freq}>{repeat.interval > 1 ? `${freq}s` : freq}</MenuItem>
+                                    )}
+                                </Select>
+                            }
+                        </Stack>
+                        {repeat?.frequency == "week" &&
+                            <Stack
+                                direction="row"
+                                alignItems="center"
+                                justifyContent="center"
                             >
-                                {["day", "week", "month", "year"].map(freq =>
-                                    <MenuItem value={freq}>{repeat.interval > 1 ? `${freq}s` : freq}</MenuItem>
+                                <Typography>on</Typography>
+                                {["S", "M", "T", "W", "T", "F", "S"].map((day, i) =>
+                                    <IconButton
+                                        size="small"
+                                        color={isBitSet(getWeekDays(date, repeat.weekDays), i) ? "primary" : "default"}
+                                        onClick={() => {
+                                            const weekDays = toggleBit(getWeekDays(date, repeat.weekDays), i);
+                                            if (weekDays === getDefaultWeekDays(date)) {
+                                                setRepeat({ frequency: repeat.frequency, interval: repeat.interval });
+                                            } else {
+                                                setRepeat({ ...repeat, weekDays: weekDays });
+                                            }
+                                        }}
+                                    >
+                                        <Typography
+                                            fontWeight={isBitSet(getWeekDays(date, repeat.weekDays), i) ? "bold" : "normal"}
+                                        >
+                                            {day}
+                                        </Typography>
+                                    </IconButton>
                                 )}
-                            </Select>
+                            </Stack>
                         }
                     </Stack>
                 }
@@ -139,7 +179,10 @@ function DateSelector({ completed, dueDate, onClick }: Props) {
                             setAnchorEl(null);
                             onClick(date ? toDueDate(date, repeat) : undefined);
                         }}
-                        disabled={date?.getTime() === savedDate?.getTime() && shallowEquals(repeat, savedRepeat)}
+                        disabled={
+                            (date?.getTime() === savedDate?.getTime() && shallowEquals(repeat, savedRepeat))
+                            || repeat?.weekDays === 0
+                        }
                     >
                         Save
                     </Button>

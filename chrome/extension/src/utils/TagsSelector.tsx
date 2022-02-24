@@ -30,7 +30,7 @@ function TagsSelector({ completed, tagIds, onClick }: Props) {
     return (
         <div>
             <Tooltip
-                title={<Typography>{savedTags.map(tag => tag.name).join() || "Add one or more tags to this task"}</Typography>}
+                title={<Typography>{savedTags.map(tag => tag.name).join(", ") || "Add one or more tags to this task"}</Typography>}
                 enterDelay={TOOLTIP_ENTER_DELAY}
                 leaveDelay={TOOLTIP_LEAVE_DELAY}
             >

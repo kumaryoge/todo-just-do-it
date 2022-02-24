@@ -14,18 +14,30 @@ export const DEFAULT_SETTINGS: Settings = {
 const dateFormat: Intl.DateTimeFormatOptions = { weekday: "short", month: "short", day: "numeric" };
 const dateFormatLong: Intl.DateTimeFormatOptions = { weekday: "long", year: "numeric", month: "long", day: "numeric" };
 
-export function getDateTooltipTitle(savedDate: Date | null, savedRepeat?: RepeatPattern) {
-    return (savedDate &&
-        (savedDate.toLocaleDateString(navigator.language, dateFormatLong) +
-            (savedRepeat
-                ? ` | Repeats every ${savedRepeat.interval} ${savedRepeat.frequency}${savedRepeat.interval > 1 ? "s" : ""}`
+function getWeekDaysTooltip(n: number): string {
+    const WEEK_DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const result: string[] = [];
+    for (let i = 0; i < 7; ++i) {
+        if (isBitSet(n, i)) {
+            result.push(WEEK_DAYS[i]);
+        }
+    }
+    return result.join(", ");
+}
+
+export function getDateTooltipTitle(date: Date | null, repeat?: RepeatPattern) {
+    return (date &&
+        (date.toLocaleDateString(navigator.language, dateFormatLong) +
+            (repeat
+                ? (` | Repeats every ${repeat.interval > 1 ? repeat.interval + " " : ""}${repeat.frequency}${repeat.interval > 1 ? "s" : ""}`
+                    + `${repeat.frequency === "week" && repeat.weekDays !== undefined ? " on " + getWeekDaysTooltip(repeat.weekDays) : ""}`)
                 : "")
         )
     ) || "Add a due date to this task";
 }
 
-export function getDateChipLabel(savedDate: Date | null) {
-    return (savedDate && savedDate.toLocaleDateString(navigator.language, dateFormat)) || "+";
+export function getDateChipLabel(date: Date | null) {
+    return (date && date.toLocaleDateString(navigator.language, dateFormat)) || "+";
 }
 
 export function getGreeting() {
@@ -108,8 +120,11 @@ export function toDueDate(date: Date, repeat?: RepeatPattern): DueDate {
     };
 }
 
-export function isPastDate(d: Date): boolean {
-    const date = toDueDate(d);
+export function isPastDate(inputDate: Date | null): boolean {
+    if (!inputDate) {
+        return false;
+    }
+    const date = toDueDate(inputDate);
     const today = toDueDate(new Date());
     return (date.year < today.year)
         || (date.year === today.year && date.month < today.month)
@@ -139,7 +154,17 @@ export function getNextDueDate(dueDate: DueDate, repeat: RepeatPattern) {
             date.setDate(date.getDate() + repeat.interval);
             break;
         case "week":
-            date.setDate(date.getDate() + repeat.interval * 7);
+            if (repeat.weekDays === undefined) {
+                date.setDate(date.getDate() + repeat.interval * 7);
+            } else {
+                const day = date.getDay();
+                for (let i = 1; i <= 7; ++i) {
+                    if (isBitSet(repeat.weekDays, (day + i) % 7)) {
+                        date.setDate(date.getDate() + i);
+                        break;
+                    }
+                }
+            }
             break;
         case "month":
             date.setMonth(date.getMonth() + repeat.interval);
@@ -174,4 +199,20 @@ export function shallowEquals(object1: any, object2: any) {
         }
     }
     return true;
+}
+
+export function getDefaultWeekDays(date: Date): number {
+    return toggleBit(0, date.getDay());
+}
+
+export function getWeekDays(date: Date, weekDays?: number): number {
+    return weekDays !== undefined ? weekDays : getDefaultWeekDays(date);
+}
+
+export function toggleBit(n: number, i: number): number {
+    return (n ^ (1 << i));
+}
+
+export function isBitSet(n: number, i: number): boolean {
+    return (n & (1 << i)) != 0;
 }

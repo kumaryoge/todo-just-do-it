@@ -45,6 +45,7 @@ export type DueDate = {
 export type RepeatPattern = {
     frequency: Frequency;
     interval: number;
+    weekDays?: number; // 7-bit number with a bit (from right to left) for each day of week from Sunday to Saturday
 };
 
 export type Frequency = "day" | "week" | "month" | "year";
