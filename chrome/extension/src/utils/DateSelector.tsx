@@ -131,7 +131,7 @@ function DateSelector({ completed, dueDate, onClick }: Props) {
                                 </Select>
                             }
                         </Stack>
-                        {repeat?.frequency == "week" &&
+                        {repeat?.frequency === "week" &&
                             <Stack
                                 direction="row"
                                 alignItems="center"

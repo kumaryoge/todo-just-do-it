@@ -214,5 +214,5 @@ export function toggleBit(n: number, i: number): number {
 }
 
 export function isBitSet(n: number, i: number): boolean {
-    return (n & (1 << i)) != 0;
+    return (n & (1 << i)) !== 0;
 }
