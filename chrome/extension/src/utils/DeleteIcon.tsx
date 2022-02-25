@@ -22,7 +22,7 @@ function DeleteIcon({ classes, onClick }: Props) {
                 anchorEl={anchorEl}
                 onClose={() => setAnchorEl(null)}
             >
-                <Typography p={2}>Are you sure?</Typography>
+                <Typography textAlign="center" p={2}>Delete item?</Typography>
                 <Stack direction="row">
                     <Button fullWidth={true} onClick={onClick}>Yes</Button>
                     <Button fullWidth={true} onClick={() => setAnchorEl(null)}>No</Button>

@@ -3,6 +3,7 @@ import { DueDate, RepeatPattern, Settings, Task, TaskListType } from "../types/a
 export const ITEM_NAME_MAX_LENGTH = 512;
 export const TOOLTIP_ENTER_DELAY = 700;
 export const TOOLTIP_LEAVE_DELAY = 200;
+export const TASK_TOGGLE_DELAY = 250;
 export const DEFAULT_SETTINGS: Settings = {
     showBadge: false,
     autoExpandTodayList: true,
@@ -16,21 +17,30 @@ const dateFormatLong: Intl.DateTimeFormatOptions = { weekday: "long", year: "num
 
 function getWeekDaysTooltip(n: number): string {
     const WEEK_DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    const result: string[] = [];
+    const result: number[] = [];
     for (let i = 0; i < 7; ++i) {
         if (isBitSet(n, i)) {
-            result.push(WEEK_DAYS[i]);
+            result.push(i);
         }
     }
-    return result.join(", ");
+    if (shallowEquals(result, [0, 1, 2, 3, 4, 5, 6])) {
+        return "all days";
+    }
+    if (shallowEquals(result, [1, 2, 3, 4, 5])) {
+        return "weekdays";
+    }
+    if (shallowEquals(result, [0, 6])) {
+        return "weekends";
+    }
+    return result.map(i => WEEK_DAYS[i]).join(", ");
 }
 
 export function getDateTooltipTitle(date: Date | null, repeat?: RepeatPattern) {
     return (date &&
         (date.toLocaleDateString(navigator.language, dateFormatLong) +
             (repeat
-                ? (` | Repeats every ${repeat.interval > 1 ? repeat.interval + " " : ""}${repeat.frequency}${repeat.interval > 1 ? "s" : ""}`
-                    + `${repeat.frequency === "week" && repeat.weekDays !== undefined ? " on " + getWeekDaysTooltip(repeat.weekDays) : ""}`)
+                ? (`\nRepeats every ${repeat.interval > 1 ? repeat.interval + " " : ""}${repeat.frequency}${repeat.interval > 1 ? "s" : ""}`
+                    + `${repeat.frequency === "week" ? " on " + getWeekDaysTooltip(getWeekDays(date, repeat.weekDays)) : ""}`)
                 : "")
         )
     ) || "Add a due date to this task";

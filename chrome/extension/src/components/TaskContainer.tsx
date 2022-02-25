@@ -8,7 +8,7 @@ import { Stack } from '@mui/material';
 import DateSelector from '../utils/DateSelector';
 import ProjectSelector from '../utils/ProjectSelector';
 import TagsSelector from '../utils/TagsSelector';
-import { getNextDueDate } from '../utils/common';
+import { getNextDueDate, TASK_TOGGLE_DELAY } from '../utils/common';
 
 interface Props {
     task?: Task;
@@ -24,16 +24,23 @@ function TaskContainer({ task, newTaskDueDate, newTaskProjectId, newTaskTagId, h
     const [dueDate, setDueDate] = React.useState<DueDate | undefined>(task ? task.dueDate : newTaskDueDate);
     const [projectId, setProjectId] = React.useState<number | undefined>(task ? task.projectId : newTaskProjectId);
     const [tagIds, setTagIds] = React.useState<number[] | undefined>(task ? task.tagIds : (newTaskTagId ? [newTaskTagId] : undefined));
+    const [toggling, setToggling] = React.useState(false);
 
     const toggleCompletion = () => {
-        if (task) {
-            if (!task.completed && task.dueDate?.repeat) {
-                task.dueDate = getNextDueDate(task.dueDate, task.dueDate.repeat);
-            } else {
-                task.completed = !task.completed;
+        setToggling(true);
+        setTimeout(() => {
+            if (task) {
+                if (!task.completed && task.dueDate?.repeat) {
+                    task.dueDate = getNextDueDate(task.dueDate, task.dueDate.repeat);
+                } else {
+                    task.completed = !task.completed;
+                }
+                updateItem("tasks", task, () => {
+                    onChange();
+                    setToggling(false);
+                });
             }
-            updateItem("tasks", task, onChange);
-        }
+        }, TASK_TOGGLE_DELAY);
     };
 
     const updateDueDate = (dueDate?: DueDate) => {
@@ -68,9 +75,9 @@ function TaskContainer({ task, newTaskDueDate, newTaskProjectId, newTaskTagId, h
             spacing={1}
         >
             {!task ? addIcon() :
-                (task.completed
-                    ? completedTaskIcon(toggleCompletion)
-                    : taskIcon(toggleCompletion))
+                (!task.completed
+                    ? !toggling ? taskIcon(toggleCompletion) : completedTaskIcon()
+                    : !toggling ? completedTaskIcon(toggleCompletion) : taskIcon())
             }
             <Stack width={"100%"}>
                 {!task ?

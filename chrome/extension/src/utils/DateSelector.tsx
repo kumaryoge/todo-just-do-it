@@ -34,7 +34,7 @@ function DateSelector({ completed, dueDate, onClick }: Props) {
     return (
         <div>
             <Tooltip
-                title={<Typography>{getDateTooltipTitle(savedDate, savedRepeat)}</Typography>}
+                title={<Typography whiteSpace="pre-line">{getDateTooltipTitle(savedDate, savedRepeat)}</Typography>}
                 enterDelay={TOOLTIP_ENTER_DELAY}
                 leaveDelay={TOOLTIP_LEAVE_DELAY}
             >
@@ -144,7 +144,7 @@ function DateSelector({ completed, dueDate, onClick }: Props) {
                                         color={isBitSet(getWeekDays(date, repeat.weekDays), i) ? "primary" : "default"}
                                         onClick={() => {
                                             const weekDays = toggleBit(getWeekDays(date, repeat.weekDays), i);
-                                            if (weekDays === getDefaultWeekDays(date)) {
+                                            if (weekDays === 0 || weekDays === getDefaultWeekDays(date)) {
                                                 setRepeat({ frequency: repeat.frequency, interval: repeat.interval });
                                             } else {
                                                 setRepeat({ ...repeat, weekDays: weekDays });
@@ -179,10 +179,7 @@ function DateSelector({ completed, dueDate, onClick }: Props) {
                             setAnchorEl(null);
                             onClick(date ? toDueDate(date, repeat) : undefined);
                         }}
-                        disabled={
-                            (date?.getTime() === savedDate?.getTime() && shallowEquals(repeat, savedRepeat))
-                            || repeat?.weekDays === 0
-                        }
+                        disabled={date?.getTime() === savedDate?.getTime() && shallowEquals(repeat, savedRepeat)}
                     >
                         Save
                     </Button>
