@@ -177,7 +177,12 @@ function DateSelector({ completed, dueDate, onClick }: Props) {
                         fullWidth={true}
                         onClick={() => {
                             setAnchorEl(null);
-                            onClick(date ? toDueDate(date, repeat) : undefined);
+                            onClick(date
+                                ? toDueDate(date,
+                                    (repeat?.weekDays === getDefaultWeekDays(date)
+                                        ? { frequency: repeat.frequency, interval: repeat.interval }
+                                        : repeat))
+                                : undefined);
                         }}
                         disabled={date?.getTime() === savedDate?.getTime() && shallowEquals(repeat, savedRepeat)}
                     >
