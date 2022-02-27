@@ -38,7 +38,7 @@ function ProjectContainer({ project, onChange }: Props) {
                     }}
                 />
             }
-            {project && deleteIcon(() => deleteItem("projects", project, onChange))}
+            {project && deleteIcon("project", () => deleteItem("projects", project, onChange))}
         </Stack>
     );
 }

@@ -32,6 +32,13 @@ function TaskContainer({ task, newTaskDueDate, newTaskProjectId, newTaskTagId, h
             if (task) {
                 if (!task.completed && task.dueDate?.repeat) {
                     task.dueDate = getNextDueDate(task.dueDate, task.dueDate.repeat);
+                    if (task.dueDate.repeat?.endAfter) {
+                        if (task.dueDate.repeat.endAfter > 1) {
+                            task.dueDate.repeat.endAfter -= 1;
+                        } else {
+                            delete task.dueDate.repeat;
+                        }
+                    }
                 } else {
                     task.completed = !task.completed;
                 }
@@ -130,7 +137,7 @@ function TaskContainer({ task, newTaskDueDate, newTaskProjectId, newTaskTagId, h
                     }
                 </Stack>
             </Stack>
-            {task && deleteIcon(() => deleteItem("tasks", task, onChange))}
+            {task && deleteIcon("task", () => deleteItem("tasks", task, onChange))}
         </Stack>
     );
 }

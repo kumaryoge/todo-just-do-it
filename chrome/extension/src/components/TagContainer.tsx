@@ -38,7 +38,7 @@ function TagContainer({ tag, onChange }: Props) {
                     }}
                 />
             }
-            {tag && deleteIcon(() => deleteItem("tags", tag, onChange))}
+            {tag && deleteIcon("tag", () => deleteItem("tags", tag, onChange))}
         </Stack>
     );
 }

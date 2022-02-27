@@ -68,8 +68,8 @@ export function addIcon(onClick?: () => void) {
     return <AddOutlined className={iconClasses(onClick)} fontSize="small" onClick={onClick} />;
 }
 
-export function deleteIcon(onClick: () => void) {
-    return <DeleteIcon classes={iconClasses(onClick)} onClick={onClick} />;
+export function deleteIcon(type: "task" | "project" | "tag", onClick: () => void) {
+    return <DeleteIcon type={type} classes={iconClasses(onClick)} onClick={onClick} />;
 }
 
 export function settingsIcon(

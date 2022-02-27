@@ -3,11 +3,12 @@ import { DeleteOutlined } from '@mui/icons-material';
 import { Button, Popover, Stack, Typography } from '@mui/material';
 
 interface Props {
+    type: "task" | "project" | "tag";
     classes: string;
     onClick(): void;
 }
 
-function DeleteIcon({ classes, onClick }: Props) {
+function DeleteIcon({ type, classes, onClick }: Props) {
     const [anchorEl, setAnchorEl] = React.useState<any>(null);
 
     return (
@@ -22,7 +23,7 @@ function DeleteIcon({ classes, onClick }: Props) {
                 anchorEl={anchorEl}
                 onClose={() => setAnchorEl(null)}
             >
-                <Typography textAlign="center" p={2}>Delete item?</Typography>
+                <Typography textAlign="center" p={2}>{`Delete ${type}?`}</Typography>
                 <Stack direction="row">
                     <Button fullWidth={true} onClick={onClick}>Yes</Button>
                     <Button fullWidth={true} onClick={() => setAnchorEl(null)}>No</Button>

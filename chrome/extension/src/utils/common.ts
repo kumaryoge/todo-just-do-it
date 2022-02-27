@@ -32,7 +32,8 @@ function getWeekDaysTooltip(n: number): string {
     if (shallowEquals(result, [0, 6])) {
         return "weekends";
     }
-    return result.map(i => WEEK_DAYS[i]).join(", ");
+    const tooltip: string = result.slice(0, result.length - 1).map(i => WEEK_DAYS[i]).join(", ");
+    return tooltip ? `${tooltip} and ${WEEK_DAYS[result[result.length - 1]]}` : WEEK_DAYS[result[0]];
 }
 
 export function getDateTooltipTitle(date: Date | null, repeat?: RepeatPattern) {
@@ -40,7 +41,8 @@ export function getDateTooltipTitle(date: Date | null, repeat?: RepeatPattern) {
         (date.toLocaleDateString(navigator.language, dateFormatLong) +
             (repeat
                 ? (`\nRepeats every ${repeat.interval > 1 ? repeat.interval + " " : ""}${repeat.frequency}${repeat.interval > 1 ? "s" : ""}`
-                    + `${repeat.frequency === "week" ? " on " + getWeekDaysTooltip(getWeekDays(date, repeat.weekDays)) : ""}`)
+                    + `${repeat.frequency === "week" ? " on " + getWeekDaysTooltip(getWeekDays(date, repeat.weekDays)) : ""}`
+                    + (repeat.endAfter ? `\nEnds after ${repeat.endAfter} repetition${repeat.endAfter > 1 ? "s" : ""}` : ""))
                 : "")
         )
     ) || "Add a due date to this task";
@@ -216,7 +218,7 @@ export function getDefaultWeekDays(date: Date): number {
 }
 
 export function getWeekDays(date: Date, weekDays?: number): number {
-    return weekDays !== undefined ? weekDays : getDefaultWeekDays(date);
+    return !weekDays ? getDefaultWeekDays(date) : weekDays;
 }
 
 export function toggleBit(n: number, i: number): number {
