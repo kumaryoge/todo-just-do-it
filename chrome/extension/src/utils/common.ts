@@ -16,24 +16,28 @@ const dateFormat: Intl.DateTimeFormatOptions = { weekday: "short", month: "short
 const dateFormatLong: Intl.DateTimeFormatOptions = { weekday: "long", year: "numeric", month: "long", day: "numeric" };
 
 function getWeekDaysTooltip(n: number): string {
-    const WEEK_DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    const result: number[] = [];
+    const ALL_DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const WEEK_DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+    const WEEK_ENDS = ["Sunday", "Saturday"];
+
+    const result: string[] = [];
     for (let i = 0; i < 7; ++i) {
         if (isBitSet(n, i)) {
-            result.push(i);
+            result.push(ALL_DAYS[i]);
         }
     }
-    if (shallowEquals(result, [0, 1, 2, 3, 4, 5, 6])) {
+
+    if (shallowEquals(result, ALL_DAYS)) {
         return "all days";
     }
-    if (shallowEquals(result, [1, 2, 3, 4, 5])) {
+    if (shallowEquals(result, WEEK_DAYS)) {
         return "weekdays";
     }
-    if (shallowEquals(result, [0, 6])) {
+    if (shallowEquals(result, WEEK_ENDS)) {
         return "weekends";
     }
-    const tooltip: string = result.slice(0, result.length - 1).map(i => WEEK_DAYS[i]).join(", ");
-    return tooltip ? `${tooltip} and ${WEEK_DAYS[result[result.length - 1]]}` : WEEK_DAYS[result[0]];
+    const tooltip: string = result.slice(0, result.length - 1).join(", ");
+    return tooltip ? `${tooltip} and ${result[result.length - 1]}` : result[0];
 }
 
 export function getDateTooltipTitle(date: Date | null, repeat?: RepeatPattern) {
